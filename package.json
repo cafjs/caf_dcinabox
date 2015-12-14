@@ -1,0 +1,24 @@
+{
+    "name": "caf_dcinabox",
+    "description": "CAF tool to emulate locally the behavior of our cloud setup.",
+    "version": "0.2.0",
+    "author": "Antonio Lain <antlai@cafjs.com>",
+    "dependencies": {
+        "minimist" : "^1.2.0",
+        "caf_core": "^0.2.0",
+        "dockerode": "^2.2.3"
+    },
+    "devDependencies": {
+        "nodeunit" : ">=0.9"
+    },
+    "bin" : {
+        "dcinabox" : "./dcinabox.js"
+    },
+    "scripts": {
+        "start" : "node ./dcinabox.js",
+        "test": "node ./node_modules/.bin/nodeunit",
+        "build": "echo done"
+    },
+    "main": "index",
+    "engines": { "node": ">= 0.10.29" }
+}
