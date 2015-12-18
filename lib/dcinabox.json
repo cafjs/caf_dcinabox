@@ -23,7 +23,8 @@
         "redisHost" : "process.env.REDIS_HOST||root-redis",
         "redisVolume" : "process.env.REDIS_VOLUME||/tmp",
         "hostIp" : "process.env.HOST_IP||127.0.0.1",
-        "accountsURL" : "process.env.ACCOUNTS_URL||http://root-accounts.vcap.me:3000"
+        "accountsURL" : "process.env.ACCOUNTS_URL||http://root-accounts.vcap.me:3000",
+        "iotDeviceManagerAppURL":"process.env.IOT_DEVICE_MANAGER_APP_URL||http://root-gadget.vcap.me:3000"
     },
     "components": [
         {
@@ -201,7 +202,8 @@
                     "APP_PROTOCOL" : "$._.env.appProtocol",
                     "APP_PUBLISHER" : "$._.env.appPublisher",
                     "APP_SUFFIX" :"$._.env.appSuffix",
-                    "ACCOUNTS_URL" : "$._.env.accountsURL"
+                    "ACCOUNTS_URL" : "$._.env.accountsURL",
+                    "IOT_DEVICE_MANAGER_APP_URL" : "$._.env.iotDeviceManagerAppURL"
                 }
             }
         },
