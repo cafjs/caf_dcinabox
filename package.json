@@ -1,11 +1,13 @@
 {
     "name": "caf_dcinabox",
     "description": "CAF tool to emulate locally the behavior of our cloud setup.",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "author": "Antonio Lain <antlai@cafjs.com>",
     "dependencies": {
         "minimist" : "^1.2.0",
         "caf_core": "^0.2.0",
+        "caf_srp": "^0.2.0",
+        "mkdirp": "^0.5.1",
         "dockerode": "^2.2.3"
     },
     "devDependencies": {

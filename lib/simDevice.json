@@ -1,0 +1,110 @@
+{
+    "name": "top",
+    "module" : "caf_core#caf_platform#platform_main",
+    "description" : "Device supervisor",
+    "env" : {
+         "deviceId" : "process.env.DEVICE_ID||foo-device1",
+        "appImage" : "process.env.APP_IMAGE||registry.cafjs.com:32000/root-rpidaemon",
+        "appProtocol" : "process.env.APP_PROTOCOL||http",
+        "appPublisher" :"process.env.APP_PUBLISHER||root",
+        "appLocalName" : "process.env.APP_LOCAL_NAME||gadget",
+        "appSuffix" : "process.env.APP_SUFFIX||vcap.me",
+        "password" : "process.env.PASSWORD||pleasechange",
+        "controlVolume" : "process.env.CONTROL_VOLUME||/tmp/control",
+        "configVolume" : "process.env.CONFIG_VOLUME||/tmp/config",
+        "synchronousInit" : "process.env.SYNCHRONOUS_INIT||true",
+        "maxRetries" : "process.env.MAX_RETRIES||10",
+        "retryDelay" : "process.env.RETRY_DELAY||2000",
+        "interval": "process.env.INTERVAL||5000",
+        "longInterval": "process.env.LONG_INTERVAL||10000",
+        "dieDelay": "process.env.DIE_DELAY||-1",
+        "maxHangRetries":  "process.env.MAX_HANG_RETRIES||200",
+        "cmdArray" : "process.env.CMD_ARRAY||[]",
+        "netName" : "process.env.NET_NAME||host",
+        "netAlreadyCreated" : "process.env.NET_ALREADY_CREATED||true",
+        "accountsURL" : "process.env.ACCOUNTS_URL||http://root-accounts.vcap.me"        
+    },
+    "components": [
+        {
+            "name": "log",
+            "module": "caf_core#caf_components#plug_log",
+            "description": "Logger service",
+            "env" : {
+                "logLevel" : "DEBUG"
+            }
+        },
+        {
+            "name": "docker",
+            "module": "./plug_docker",
+            "description": "Plug to access the local Docker daemon\n Properties: \n",
+            "env": {
+                "dockerSocket" : "process.env.DOCKER_SOCKET||/var/run/docker.sock"
+            }
+        },
+        {
+            "name": "root-device",
+            "module": "./plug_device",
+            "description": "Plug that setups a simulated device.\n Properties: \n",
+            "env": {
+                "accountsURL" : "$._.env.accountsURL",
+                "appPublisher" : "$._.env.appPublisher",
+                "appLocalName" : "$._.env.appLocalName",
+                "deviceId" : "$._.env.deviceId",
+                "password" : "$._.env.password",
+                "controlVolume" : "$._.env.controlVolume",
+                "configVolume" : "$._.env.configVolume"
+            }
+        },
+        {
+            "name": "network",
+            "module": "./plug_network",
+            "description": "Plug that creates a Docker network.\n Properties: \n",
+            "env": {
+                "netName" :  "$._.env.netName",
+                "alreadyCreated" : "$._.env.netAlreadyCreated"
+            }
+        },
+        {
+            "name": "root-gadgetdaemon",
+            "module": "./plug_container",
+            "description": "Plug that creates the application.\n Properties: \n",
+            "env": {
+                "image" : "$._.env.appImage",
+                "hostname" : "$._.env.deviceId",
+                "volumes" : [
+                    {
+                        "source" : "$._.env.controlVolume",
+                        "destination" : "/control"
+                    },
+                    {
+                        "source" : "$._.env.configVolume",
+                        "destination" : "/config"
+                    },
+                    {
+                        "source" : "/usr/bin/docker",
+                        "destination" : "/bin/docker"
+                    },
+                    {
+                        "source" : "/var/run/docker.sock",
+                        "destination" : "/var/run/docker.sock"
+                    }
+               ],
+                "networks": ["network"],                
+                "services" : [ "root-device"],
+                "cmdArray" : "$._.env.cmdArray",
+                "privileged" : true,
+                "props" : {
+                    "MY_ID" : "$._.env.deviceId",
+                    "APP_LOCAL_NAME" : "$._.env.appLocalName",
+                    "TRUSTED_PUB_KEY_FILE" : "rsa_pub.pem.dummy",
+                    "APP_PROTOCOL" : "$._.env.appProtocol",
+                    "APP_PUBLISHER" : "$._.env.appPublisher",
+                    "APP_SUFFIX" :"$._.env.appSuffix",
+                    "NET_NAME": "$._.env.netName",
+                    "NET_ALREADY_CREATED" :  "$._.env.netAlreadyCreated",
+                    "ACCOUNTS_URL" : "$._.env.accountsURL"                    
+                }
+            }
+        }        
+    ]
+}
