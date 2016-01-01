@@ -92,7 +92,8 @@ var buildImage = function(src, container, cb) {
                                               cb1(null);
                                           }
                                       };
-                                      docker.modem.followProgress(stream, onFinished);
+                                      docker.modem.followProgress(stream,
+                                                                  onFinished);
                                   }
                               });
         },
