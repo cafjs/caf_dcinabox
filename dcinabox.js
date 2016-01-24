@@ -3,13 +3,14 @@ var daemon = require('./index.js');
 var parseArgs = require('minimist');
 
 var usage = function() {
-    console.log('Usage: dcinabox.js --appLocalName <string> --appImage <string>');
+    console.log('Usage: dcinabox.js --appLocalName <string> --appImage <string> [--appWorkingDir <string>] [--hostVolume <string>] [--appVolume <string>]' );
     process.exit(1);
 };
 
 var argv = parseArgs(process.argv.slice(2), {
-    string : ['appImage', 'appLocalName'],
-    alias: {i: 'appImage', n : 'appLocalName'},
+    string : ['appImage', 'appLocalName', 'appWorkingDir', 'hostVolume', 'appVolume'],
+    alias: {i: 'appImage', n : 'appLocalName', h : 'appWorkingDir',
+            v: 'hostVolume', a: 'appVolume'},
     unknown: usage
 });
 
@@ -24,7 +25,9 @@ var addOpt = function(x){
 
 addOpt('appImage');
 addOpt('appLocalName');
-
+addOpt('appWorkingDir');
+addOpt('hostVolume');
+addOpt('appVolume');
 
 if (spec.env.appLocalName && (spec.env.appImage)) {
     daemon.run([module], null, spec, function(err, top) {

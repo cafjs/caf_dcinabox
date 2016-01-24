@@ -21,10 +21,13 @@
         "redisExternalPort" : "process.env.REDIS_EXTERNAL_PORT||6380",
         "redisPort" : "6379",
         "redisHost" : "process.env.REDIS_HOST||root-redis",
-        "redisVolume" : "process.env.REDIS_VOLUME||/tmp",
+        "redisVolume" : "process.env.REDIS_VOLUME||/tmp/redis",
         "hostIp" : "process.env.HOST_IP||127.0.0.1",
         "accountsURL" : "process.env.ACCOUNTS_URL||http://root-accounts.vcap.me:3000",
-        "iotDeviceManagerAppURL":"process.env.IOT_DEVICE_MANAGER_APP_URL||http://root-gadget.vcap.me:3000"
+        "iotDeviceManagerAppURL":"process.env.IOT_DEVICE_MANAGER_APP_URL||http://root-gadget.vcap.me:3000",
+        "appWorkingDir" : "process.env.APP_WORKING_DIR||/usr/src/app",
+        "hostVolume" : "process.env.HOST_VOLUME||/tmp/application",
+        "appVolume" : "process.env.APP_VOLUME||/usr/src/app2"
     },
     "components": [
         {
@@ -188,10 +191,17 @@
                         "containerPort" : 3000
                     }
                 ],
+                "volumes" : [
+                    {
+                        "source" : "$._.env.hostVolume",
+                        "destination" : "$._.env.appVolume"
+                    }
+                ],
                 "services" : [ "root-redis"],
                 "cmdArray" : "$._.env.cmdArray",
                 "privileged" : false,
                 "networks": ["network"],
+                "workingDir" : "$._.env.appWorkingDir",
                 "props" : {
                     "APP_LOCAL_NAME" : "$._.env.appLocalName",
                     "TRUSTED_PUB_KEY_FILE" : "rsa_pub.pem.dummy",
