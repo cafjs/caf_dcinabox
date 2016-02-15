@@ -102,7 +102,9 @@
                     "APP_SUFFIX" :"$._.env.appSuffix",
                     "NET_NAME": "$._.env.netName",
                     "NET_ALREADY_CREATED" :  "$._.env.netAlreadyCreated",
-                    "ACCOUNTS_URL" : "$._.env.accountsURL"                    
+                    "ACCOUNTS_URL" : "$._.env.accountsURL",
+                    "CONTROL_VOLUME" : "$._.env.controlVolume",
+                    "CONFIG_VOLUME" : "$._.env.configVolume"
                 }
             }
         }        

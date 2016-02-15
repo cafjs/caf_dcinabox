@@ -46,6 +46,13 @@ var bundleDependencies = function(src, cb) {
                            {maxBuffer: MAX_BUFFER}, cb);
 };
 
+var cleanupDependencies = function(src, cb) {
+    console.log('Cleaning up dependencies for ' + src);
+    var args = [src];
+    child_process.execFile(path.resolve(__dirname, 'cleanupLocalDeps.sh'), args,
+                           {maxBuffer: MAX_BUFFER}, cb);
+};
+
 var randName = function() {
     return new Buffer(crypto.randomBytes(15)).toString('hex');
 };
@@ -122,7 +129,10 @@ async.series([
     },
     function(cb0) {
         buildImage(argv.src, argv.container, cb0);
-    }
+    },
+    function(cb0) {
+        cleanupDependencies(argv.src, cb0);
+    },
 ], function(err) {
     if(err) {
         console.log(myUtils.errToPrettyStr(err));
