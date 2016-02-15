@@ -9,6 +9,7 @@
         "appPublisher" :"process.env.APP_PUBLISHER||root",
         "appLocalName" : "process.env.APP_LOCAL_NAME||gadget",
         "appSuffix" : "process.env.APP_SUFFIX||vcap.me",
+        "appDevices" : "process.env.APP_DEVICES||[]",
         "password" : "process.env.PASSWORD||pleasechange",
         "controlVolume" : "process.env.CONTROL_VOLUME||/tmp/control",
         "configVolume" : "process.env.CONFIG_VOLUME||/tmp/config",
@@ -88,7 +89,7 @@
                         "source" : "/var/run/docker.sock",
                         "destination" : "/var/run/docker.sock"
                     }
-               ],
+                ],
                 "networks": ["network"],                
                 "services" : [ "root-device"],
                 "cmdArray" : "$._.env.cmdArray",
@@ -99,7 +100,8 @@
                     "TRUSTED_PUB_KEY_FILE" : "rsa_pub.pem.dummy",
                     "APP_PROTOCOL" : "$._.env.appProtocol",
                     "APP_PUBLISHER" : "$._.env.appPublisher",
-                    "APP_SUFFIX" :"$._.env.appSuffix",
+                    "APP_SUFFIX" : "$._.env.appSuffix",
+                    "APP_DEVICES" : "$._.env.appDevices",
                     "NET_NAME": "$._.env.netName",
                     "NET_ALREADY_CREATED" :  "$._.env.netAlreadyCreated",
                     "ACCOUNTS_URL" : "$._.env.accountsURL",
