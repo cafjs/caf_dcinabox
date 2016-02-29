@@ -1,6 +1,8 @@
 #!/bin/bash
 DIR_EXEC="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 set -e
+echo "CURRENT PATH"
+echo $PWD
 dir="$1"
 links="${@:2}" 
 dir=${dir%/}
@@ -17,8 +19,8 @@ done
 npm install .
 
 find node_modules/ -name .bin  > $tmpFile
-tar cvf all2.tar  -T $tmpFile
-tar cvhf all.tar --exclude=.bin .
+tar cf all2.tar  -T $tmpFile
+tar chf all.tar --exclude=.bin .
 tar --concatenate --file=all.tar all2.tar
 
 #need to shrinkwrap without links.
@@ -26,11 +28,11 @@ tar --concatenate --file=all.tar all2.tar
 # use tar -h (follow links) to resolve them.
 tmpDir=/tmp/yy-"$RANDOM"."$RANDOM"
 mkdir -p ${tmpDir}
-tar xvf all.tar -C ${tmpDir} 
+tar xf all.tar -C ${tmpDir} 
 pushd ${tmpDir}
 npm shrinkwrap
-tar cvf all2.tar  -T $tmpFile
-tar cvhf all.tar --exclude=.bin node_modules/ npm-shrinkwrap.json
+tar cf all2.tar  -T $tmpFile
+tar chf all.tar --exclude=.bin node_modules/ npm-shrinkwrap.json
 tar --concatenate --file=all.tar all2.tar
 popd
 cp ${tmpDir}/all.tar .

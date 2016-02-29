@@ -5,7 +5,7 @@
 # TO_BUILD:       docker build --rm -t registry.cafjs.com:32000/root-dcinabox .
 # TO_RUN:         docker run  --privileged -v /var/run/docker.sock:/var/run/docker.sock  -v /usr/bin/docker:/bin/docker   registry.cafjs.com:32000/root-dcinabox  --appLocalName application --appImage registry.cafjs.com:32000/root-helloworld
  
-FROM node:0.10
+FROM node:4.3
 
 EXPOSE 3000
 

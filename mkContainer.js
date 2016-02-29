@@ -43,7 +43,11 @@ var bundleDependencies = function(src, cb) {
         }
     }
     child_process.execFile(path.resolve(__dirname, 'cpLocalDeps.sh'), args,
-                           {maxBuffer: MAX_BUFFER}, cb);
+                           {maxBuffer: MAX_BUFFER}, function(err, stdout, stderr) {
+                               console.log(stdout);
+                               console.log(stderr);
+                               cb(err, stdout, stderr);
+                           });
 };
 
 var cleanupDependencies = function(src, cb) {
