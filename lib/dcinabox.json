@@ -27,7 +27,8 @@
         "iotDeviceManagerAppURL":"process.env.IOT_DEVICE_MANAGER_APP_URL||http://root-gadget.vcap.me:3000",
         "appWorkingDir" : "process.env.APP_WORKING_DIR||/usr/src/app",
         "hostVolume" : "process.env.HOST_VOLUME||/tmp/application",
-        "appVolume" : "process.env.APP_VOLUME||/usr/src/app2"
+        "appVolume" : "process.env.APP_VOLUME||/usr/src/app2",
+        "containerNameSuffix" : "process.env.CONTAINER_NAME_SUFFIX||"
     },
     "components": [
         {
@@ -62,6 +63,7 @@
             "env": {
                 "image" : "redis",
                 "hostname" : "$._.env.redisHost",
+                "containerNameSuffix" : "$._.env.containerNameSuffix",
                 "ports" : [
                     {
                         "hostIp" : "$._.env.hostIp",
@@ -87,6 +89,7 @@
             "env": {
                 "image" : "registry.cafjs.com:32000/root-accounts",
                 "hostname" : "root-accounts",
+                "containerNameSuffix" : "$._.env.containerNameSuffix",
                 "ports" : [
                     {
                         "hostIp" : "$._.env.hostIp",
@@ -120,6 +123,7 @@
             "env": {
                 "image" : "registry.cafjs.com:32000/root-launcher",
                 "hostname" : "root-launcher",
+                "containerNameSuffix" : "$._.env.containerNameSuffix",
                 "ports" : [
                     {
                         "hostIp" : "$._.env.hostIp",
@@ -152,6 +156,7 @@
             "env": {
                 "image" : "registry.cafjs.com:32000/root-gadget",
                 "hostname" : "root-gadget",
+                "containerNameSuffix" : "$._.env.containerNameSuffix",
                 "ports" : [
                     {
                         "hostIp" : "$._.env.hostIp",
@@ -184,6 +189,7 @@
             "env": {
                 "image" : "$._.env.appImage",
                 "hostname" : "root-application",
+                "containerNameSuffix" : "$._.env.containerNameSuffix",
                 "ports" : [
                     {
                         "hostIp" : "$._.env.hostIp",
@@ -224,6 +230,7 @@
             "env": {
                 "image" : "registry.cafjs.com:32000/root-netproxy",
                 "hostname" : "root-netproxy",
+                "containerNameSuffix" : "$._.env.containerNameSuffix",
                 "ports" : [
                     {
                         "hostIp" : "$._.env.hostIp",

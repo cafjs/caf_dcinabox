@@ -72,6 +72,7 @@
             "env": {
                 "image" : "$._.env.appImage",
                 "hostname" : "$._.env.deviceId",
+                "containerNameSuffix" : "$._.env.deviceId",
                 "volumes" : [
                     {
                         "source" : "$._.env.controlVolume",
