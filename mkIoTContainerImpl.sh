@@ -7,9 +7,9 @@ REGISTRY_USER=${REGISTRY_USER:-'root'}
 APP_SUFFIX=${APP_SUFFIX:-'vcap.me'}
 url=http://${REGISTRY_USER}-$1.${APP_SUFFIX}/iot.tgz
 
-id=`curl -sI $url | grep ETag | awk '{print $2}' | sed s/\"//g | sed s#W/##g `
+id=`curl -sI $url | grep ETag | awk '{print $2}' | sed s/\"//g | sed s#W/##g | sed s/+/0/g | sed s#/#0#g `
 id="${id/$'\r'/}"
-container=${REGISTRY_LOCAL_PREFIX}/${REGISTRY_USER}-$1:${id}
+container=${REGISTRY_LOCAL_PREFIX}/${REGISTRY_USER}-$1:${id}$2
 echo $container
 
 rm -fr ${TMP_DIR}
