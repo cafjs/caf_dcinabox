@@ -43,15 +43,23 @@ var bundleDependencies = function(src, cb) {
         }
     }
     child_process.execFile(path.resolve(__dirname, 'cpLocalDeps.sh'), args,
-                           {maxBuffer: MAX_BUFFER}, function(err, stdout, stderr) {
+                           {maxBuffer: MAX_BUFFER},
+                           function(err, stdout, stderr) {
                                console.log(stdout);
                                console.log(stderr);
                                cb(err, stdout, stderr);
                            });
 };
 
-var cleanupDependencies = function(src, cb) {
-    console.log('Cleaning up dependencies for ' + src);
+var copyAll = function(src, dest, cb) {
+    console.log('Copying from ' + src + ' to ' + dest);
+    var args = [src, dest];
+    child_process.execFile(path.resolve(__dirname, 'cpAll.sh'), args,
+                           {maxBuffer: MAX_BUFFER}, cb);
+};
+
+var cleanup = function(src, cb) {
+    console.log('Cleaning up for ' + src);
     var args = [src];
     child_process.execFile(path.resolve(__dirname, 'cleanupLocalDeps.sh'), args,
                            {maxBuffer: MAX_BUFFER}, cb);
@@ -114,15 +122,21 @@ var buildImage = function(src, container, cb) {
     ], cb0);
 };
 
+
+var newSrc = path.resolve(TEMP_DIR, randName());
+
 async.series([
     function(cb0) {
-        bundleDependencies(argv.src, cb0);
+        copyAll(argv.src, newSrc, cb0);
     },
     function(cb0) {
-        var  iotDir = path.resolve(argv.src, IOT_SUBDIR);
+        bundleDependencies(newSrc, cb0);
+    },
+    function(cb0) {
+        var  iotDir = path.resolve(newSrc, IOT_SUBDIR);
         fs.stat(iotDir, function(err, stats) {
             if (err) {
-                cb0(null);               
+                cb0(null);
             } else if (stats && stats.isDirectory()) {
                 bundleDependencies(iotDir, cb0);
             } else {
@@ -132,10 +146,10 @@ async.series([
         });
     },
     function(cb0) {
-        buildImage(argv.src, argv.container, cb0);
+        buildImage(newSrc, argv.container, cb0);
     },
     function(cb0) {
-        cleanupDependencies(argv.src, cb0);
+        cleanup(newSrc, cb0);
     },
 ], function(err) {
     if(err) {

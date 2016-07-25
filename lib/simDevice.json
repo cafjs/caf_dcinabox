@@ -11,7 +11,6 @@
         "appSuffix" : "process.env.APP_SUFFIX||vcap.me",
         "appDevices" : "process.env.APP_DEVICES||[]",
         "password" : "process.env.PASSWORD||pleasechange",
-        "controlVolume" : "process.env.CONTROL_VOLUME||/tmp/control",
         "configVolume" : "process.env.CONFIG_VOLUME||/tmp/config",
         "synchronousInit" : "process.env.SYNCHRONOUS_INIT||true",
         "maxRetries" : "process.env.MAX_RETRIES||10",
@@ -23,7 +22,7 @@
         "cmdArray" : "process.env.CMD_ARRAY||[]",
         "netName" : "process.env.NET_NAME||host",
         "netAlreadyCreated" : "process.env.NET_ALREADY_CREATED||true",
-        "accountsURL" : "process.env.ACCOUNTS_URL||http://root-accounts.vcap.me"        
+        "accountsURL" : "process.env.ACCOUNTS_URL||http://root-accounts.vcap.me"
     },
     "components": [
         {
@@ -52,7 +51,6 @@
                 "appLocalName" : "$._.env.appLocalName",
                 "deviceId" : "$._.env.deviceId",
                 "password" : "$._.env.password",
-                "controlVolume" : "$._.env.controlVolume",
                 "configVolume" : "$._.env.configVolume"
             }
         },
@@ -75,23 +73,15 @@
                 "containerNameSuffix" : "$._.env.deviceId",
                 "volumes" : [
                     {
-                        "source" : "$._.env.controlVolume",
-                        "destination" : "/control"
-                    },
-                    {
                         "source" : "$._.env.configVolume",
                         "destination" : "/config"
-                    },
-                    {
-                        "source" : "/usr/bin/docker",
-                        "destination" : "/bin/docker"
                     },
                     {
                         "source" : "/var/run/docker.sock",
                         "destination" : "/var/run/docker.sock"
                     }
                 ],
-                "networks": ["network"],                
+                "networks": ["network"],
                 "services" : [ "root-device"],
                 "cmdArray" : "$._.env.cmdArray",
                 "privileged" : true,
@@ -106,10 +96,9 @@
                     "NET_NAME": "$._.env.netName",
                     "NET_ALREADY_CREATED" :  "$._.env.netAlreadyCreated",
                     "ACCOUNTS_URL" : "$._.env.accountsURL",
-                    "CONTROL_VOLUME" : "$._.env.controlVolume",
                     "CONFIG_VOLUME" : "$._.env.configVolume"
                 }
             }
-        }        
+        }
     ]
 }

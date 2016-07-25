@@ -32,8 +32,6 @@ addOpt('deviceId', DEFAULT_DEVICE_ID);
 addOpt('password', DEFAULT_PASSWORD);
 addOpt('rootDir', DEFAULT_ROOT_DIR);
 
-spec.env.controlVolume = spec.env.rootDir + '/' + spec.env.deviceId +
-    '/control';
 spec.env.configVolume = spec.env.rootDir + '/' + spec.env.deviceId +
     '/config';
 
@@ -51,4 +49,3 @@ daemon.run([module], 'simDevice.json', spec, function(err, top) {
         });
     }
 });
-
