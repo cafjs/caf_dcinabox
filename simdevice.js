@@ -5,15 +5,17 @@ var parseArgs = require('minimist');
 var DEFAULT_DEVICE_ID='foo-device1';
 var DEFAULT_PASSWORD='pleasechange';
 var DEFAULT_ROOT_DIR='/tmp';
+var DEFAULT_APP_SUFFIX='vcap.me';
+
 
 var usage = function() {
-    console.log('Usage: simdevice.js --deviceId <string, e.g., foo-device1> --password <string> --rootDir <string>');
+    console.log('Usage: simdevice.js --deviceId <string, e.g., foo-device1> --password <string> --rootDir <string> [--appSuffix <string>]');
     process.exit(1);
 };
 
 var argv = parseArgs(process.argv.slice(2), {
-    string : ['deviceId', 'password', 'rootDir'],
-    alias: {d : 'deviceId', p: 'password', r : 'rootDir'},
+    string : ['deviceId', 'password', 'rootDir', 'appSuffix'],
+    alias: {d : 'deviceId', p: 'password', r : 'rootDir', a : 'appSuffix'},
     unknown: usage
 });
 
@@ -31,6 +33,12 @@ var addOpt = function(x, defaultValue) {
 addOpt('deviceId', DEFAULT_DEVICE_ID);
 addOpt('password', DEFAULT_PASSWORD);
 addOpt('rootDir', DEFAULT_ROOT_DIR);
+addOpt('appSuffix', DEFAULT_APP_SUFFIX);
+
+if (spec.env.appSuffix !== DEFAULT_APP_SUFFIX) {
+    spec.env.appProtocol = 'https';
+    spec.env.accountsURL = 'https://root-accounts.' + spec.env.appSuffix;
+};
 
 spec.env.configVolume = spec.env.rootDir + '/' + spec.env.deviceId +
     '/config';
