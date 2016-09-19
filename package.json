@@ -1,7 +1,7 @@
 {
     "name": "caf_dcinabox",
     "description": "CAF tool to emulate locally the behavior of our cloud setup.",
-    "version": "0.2.17",
+    "version": "0.2.18",
     "author": "Antonio Lain <antlai@cafjs.com>",
     "dependencies": {
         "minimist" : "^1.2.0",
@@ -20,7 +20,8 @@
         "dcinabox" : "./dcinabox.js",
         "mkContainer" : "./mkContainer.js",
         "mkIoTContainer" : "./mkIoTContainer.js",
-        "simdevice" : "./simdevice.js"
+        "simdevice" : "./simdevice.js",
+        "reset" : "./reset.sh"
     },
     "scripts": {
         "start" : "node ./dcinabox.js",
