@@ -28,7 +28,9 @@
         "appWorkingDir" : "process.env.APP_WORKING_DIR||/usr/src/app",
         "hostVolume" : "process.env.HOST_VOLUME||/tmp/application",
         "appVolume" : "process.env.APP_VOLUME||/usr/src/app2",
-        "containerNameSuffix" : "process.env.CONTAINER_NAME_SUFFIX||"
+        "containerNameSuffix" : "process.env.CONTAINER_NAME_SUFFIX||",
+        "registryUsername" : "process.env.REGISTRY_USERNAME||foo",
+        "registryPassword" : "process.env.REGISTRY_PASSWORD||pleasechange"
     },
     "components": [
         {
@@ -63,6 +65,8 @@
             "env": {
                 "image" : "redis",
                 "hostname" : "$._.env.redisHost",
+                "registryUsername" : "$._.env.registryUsername",
+                "registryPassword" : "$._.env.registryPassword",
                 "containerNameSuffix" : "$._.env.containerNameSuffix",
                 "ports" : [
                     {
@@ -89,6 +93,8 @@
             "env": {
                 "image" : "registry.cafjs.com:32000/root-accounts",
                 "hostname" : "root-accounts",
+                "registryUsername" : "$._.env.registryUsername",
+                "registryPassword" : "$._.env.registryPassword",
                 "containerNameSuffix" : "$._.env.containerNameSuffix",
                 "ports" : [
                     {
@@ -104,7 +110,7 @@
                 "props" : {
                     "TRUSTED_PUB_KEY_FILE" : "rsa_pub.pem.dummy",
                     "PUBLIC_KEY_FILE" : "rsa_pub.pem.dummy",
-                    "PRIVATE_KEY_FILE" : "rsa_priv.pem.dummy",              
+                    "PRIVATE_KEY_FILE" : "rsa_priv.pem.dummy",
                     "HOST": "root-accounts",
                     "REDIS_PAAS" : "ignore",
                     "REDIS_PORT_6379_TCP_PORT" :  "$._.env.redisPort",
@@ -123,6 +129,8 @@
             "env": {
                 "image" : "registry.cafjs.com:32000/root-launcher",
                 "hostname" : "root-launcher",
+                "registryUsername" : "$._.env.registryUsername",
+                "registryPassword" : "$._.env.registryPassword",
                 "containerNameSuffix" : "$._.env.containerNameSuffix",
                 "ports" : [
                     {
@@ -156,6 +164,8 @@
             "env": {
                 "image" : "registry.cafjs.com:32000/root-gadget",
                 "hostname" : "root-gadget",
+                "registryUsername" : "$._.env.registryUsername",
+                "registryPassword" : "$._.env.registryPassword",
                 "containerNameSuffix" : "$._.env.containerNameSuffix",
                 "ports" : [
                     {
@@ -189,6 +199,8 @@
             "env": {
                 "image" : "$._.env.appImage",
                 "hostname" : "root-application",
+                "registryUsername" : "$._.env.registryUsername",
+                "registryPassword" : "$._.env.registryPassword",
                 "containerNameSuffix" : "$._.env.containerNameSuffix",
                 "ports" : [
                     {
@@ -230,6 +242,8 @@
             "env": {
                 "image" : "registry.cafjs.com:32000/root-netproxy",
                 "hostname" : "root-netproxy",
+                "registryUsername" : "$._.env.registryUsername",
+                "registryPassword" : "$._.env.registryPassword",
                 "containerNameSuffix" : "$._.env.containerNameSuffix",
                 "ports" : [
                     {
