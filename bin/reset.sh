@@ -5,3 +5,4 @@ if [ "$ALL" != "" ]; then
 fi
 
 docker network rm vcap.me 2> /dev/null
+exit 0
