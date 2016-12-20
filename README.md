@@ -87,7 +87,7 @@ What about RPi I/O, like GPIO pins? For example, the `caf_rpi_gpio` package uses
 
 A device typically has two containers running:
 
-* A privileged, management container that switches/updates apps, provides tokens for single sign-on, or builds images locally. Its CA is an instance of the `root-gadget` application. See package `extra/caf_gadget_daemon` for details.
+* A privileged, manager container that switches/updates apps, provides tokens for single sign-on, or builds images locally. Its CA is an instance of the `root-gadget` application. See package `extra/caf_gadget_daemon` for details.
 * An application container that could be privileged, or not, depending on the application needs. We use different base container images for each case, and the manager container starts them with different security profiles.
 
 The `device_options` to `cafjs device` are:
@@ -99,7 +99,7 @@ The `device_options` to `cafjs device` are:
 
 #### `cafjs mkIoTImage <appLocalName> [privileged:boolean]`
 
-Devices build their own images based on a `npm`, shrink-wrapped,  package bundle, downloaded from the cloud. By locally swapping the base image, we can support very different devices in a transparent way.
+Devices build their own images locally, after downloading from the cloud a shrink-wrapped, `npm` package. The device chooses the Docker base image, and this allows supporting very different devices in a transparent way.
 
 For example:
 
@@ -109,13 +109,13 @@ The `ETag` of that HTTP response is a cryptographic hash of the contents of that
 
     localhost.localdomain:5000/root-helloiot:1ab3-dDwruH2Ccnkes2ObeJPGeQ
 
-The manager container periodically queries the Cloud for the current `ETag` value, and if it changes, it rebuilds the image and restarts the container app.
+The manager container periodically queries the Cloud for the current `ETag` value and, when it changes, it rebuilds the image and restarts the container app.
 
-The catch is that, if we are simulating a device for development, module dependencies may be only locally available, and the manager container will not be able to find them.
+The catch is that, if we are simulating a device in development mode, some module dependencies are likely to be local-only, and the manager container will not be able to find them.
 
-To solve this problem, we create the image with the expected name beforehand, using `cafjs mkIoTImage`, and then the manager container will not try to build it again.
+To solve this problem, we create the image with the expected name beforehand, using `cafjs mkIoTImage`. Then, the manager container will not try to build it again.
 
-In order to execute this command we need the app running (see `cafjs run` above). `cafjs mkIoTImage` pretends to be a manager container, downloads the bundle and the `ETag`, and builds the container with local dependencies. For example, if the previous app is not privileged:
+In order to execute this command we need the app running (see `cafjs run` above). `cafjs mkIoTImage` pretends to be a manager container, downloads the bundle and the `ETag`, and builds the container with local dependencies. For example, if the previous app is not privileged, the command is:
 
     cafjs mkIoTImage helloiot false
 
