@@ -77,7 +77,13 @@ It copies local dependencies with the `caf_` prefix, and to ensure that no dev d
 
 Simulates a device that access a CA. It uses `qemu-arm-static` to execute ARM instructions on your laptop or VM. This allows to test or build Docker images for the Raspberry Pi anywhere, even if they need node.js modules with native extensions. No more cross-compilation nightmares...
 
-The requirement on the Linux host is that `binfmt` should be enabled. In Ubuntu just install the package `binfmt-support`. Our base container images already include `qemu-arm-static`, there is no need to install it in the host.
+The requirement on the Linux host is that `binfmt` should be enabled. In Ubuntu just install the packages `qemu-user-static` and `binfmt-support`. Our base container images already include `qemu-arm-static`, but installing it in the host provides the correct configuration for `binfmt`.
+
+Download Docker ARM base images with:
+
+    ./extra/caf_rpi/setup.sh
+
+this script will also try, and fail, to create a token for a device. Ignore this failure, `cafjs device` already generates those tokens.
 
 The execution speed is not that bad, mostly because `qemu-arm-static` only emulates the application, and not the OS (i.e., the I/O). A core of my high-end laptop is roughly the same as a RPi 2 core.
 
@@ -172,6 +178,6 @@ The simplest way to do this is to skip the `mkIoTImage` step, and just run the s
 
     cafjs device foo-device1
 
-If the device image is missing (use `docker rmi` to delete it, if needed), the management container will try to build it using only external dependencies. It takes about 2 minutes in my laptop.
+If the device image is missing (use `docker rmi` to delete it, if needed), the manager container will try to build it using only external dependencies. It takes about 2 minutes in my laptop.
 
 The rest of the setup is similar to the previous case. In fact, since the `Redis` container persists changes in a host volume, all your CAs should still be there.
