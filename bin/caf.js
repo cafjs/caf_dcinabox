@@ -3,7 +3,8 @@ var child_process = require('child_process');
 var parseArgs = require('minimist');
 var path = require('path');
 
-var HELP = 'Usage: cafjs run|build|reset|device|mkImage|mkIoTImage|help \n\
+var HELP = 'Usage: cafjs run|build|reset|device|mkImage|mkIoTImage|mkStatic|\
+help \n\
 where: \n\
 *  run:  starts a simulated cloud that mounts an app local volume. \n\
 *  build: builds an application using local dependencies. \n\
@@ -11,11 +12,13 @@ where: \n\
 *  device: simulates a device that access a CA. \n\
 *  mkImage: builds a Docker image with the app. \n\
 *  mkIoTImage: builds a Docker image for the device app. \n\
+*  mkStatic: creates a dependency file to load artifacts statically. \n\
 *  help [command]: prints this info or details of any of the above. \n\
 ';
 
 var usage = function() {
-    console.log('Usage: cafjs run|build|reset|device|mkImage|mkIoTImage|help <...args...>');
+    console.log('Usage: cafjs run|build|reset|device|mkImage|mkIoTImage|\
+mkStatic|help <...args...>');
     process.exit(1);
 };
 
@@ -208,6 +211,27 @@ var that = {
         var privileged = options.shift();
         condInsert(argv, 'privileged', privileged || false);
         that.__spawn__('mkIoTContainer.js', argsToArray(argv));
+    },
+
+    mkStatic: function(args) {
+       var usage = function(x) {
+            if (x.indexOf('--') !== 0) {
+                return true;
+            } else {
+                console.log('Invalid ' + x);
+                that.__usage__('Usage: cafjs mkStatic [rootDir]');
+                return false;
+            }
+        };
+        var argv = parseArgs(args, {
+            string : ['rootDir'],
+            unknown: usage
+        });
+
+        var options = argv._ || [];
+        var rootDir = options.shift();
+        condInsert(argv, 'rootDir', rootDir || process.cwd());
+        that.__spawn__('mkStatic.js', argsToArray(argv));
     },
 
     help: function(args) {
