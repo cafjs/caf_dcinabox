@@ -22,6 +22,11 @@ if (!argv.rootDir) {
     usage();
 }
 
+/* MK_STATIC env variable can change the behavior of plugins
+ when, e.g., they cannot access devices within a container directly*/
+process.env['MK_STATIC'] = 'true';
+
+
 console.log('Starting mkStatic.js');
 
 // main is typically caf_iot
