@@ -8,7 +8,7 @@
         "appPublisher" :"process.env.APP_PUBLISHER||root",
         "appLocalName" : "process.env.APP_LOCAL_NAME||dcinabox",
         "appSuffix" : "process.env.APP_SUFFIX||vcap.me",
-        "httpExternalPort" : 80,
+        "httpExternalPort" : "process.env.HTTP_EXTERNAL_PORT||80",
         "cmdArray" : "process.env.CMD_ARRAY||[]",
         "synchronousInit" : "process.env.SYNCHRONOUS_INIT||true",
         "maxRetries" : "process.env.MAX_RETRIES||10",
