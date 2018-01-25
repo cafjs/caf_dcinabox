@@ -2,28 +2,40 @@
 var child_process = require('child_process');
 var parseArgs = require('minimist');
 var path = require('path');
+var fs = require('fs');
+var os = require('os');
+var rimraf = require('rimraf');
+var caf_core =  require('caf_core');
+var caf_comp = caf_core.caf_components;
+var async = caf_comp.async;
+
+var myUtils = caf_comp.myUtils;
 
 var HELP = 'Usage: cafjs run|build|reset|device|mkImage|mkIoTImage|mkStatic|\
-help \n\
+pack|help \n\
 where: \n\
 *  run:  starts a simulated cloud that mounts an app local volume. \n\
 *  build: builds an application using local dependencies. \n\
 *  reset: cleans up, brute force, all docker containers and networks. \n\
 *  device: simulates a device that access a CA. \n\
-*  mkImage: builds a Docker image with the app. \n\
+*  mkImage: builds a Docker image from a packed app or a directory. \n\
 *  mkIoTImage: builds a Docker image for the device app. \n\
 *  mkStatic: creates a dependency file to load artifacts statically. \n\
+*  pack: packs an application embedded in yarn workspaces. \n\
 *  help [command]: prints this info or details of any of the above. \n\
 ';
 
 var usage = function() {
     console.log('Usage: cafjs run|build|reset|device|mkImage|mkIoTImage|\
-mkStatic|help <...args...>');
+mkStatic|pack|help <...args...>');
     process.exit(1);
 };
 
 var condInsert = function(target, key, value) {
-    if (target[key] === undefined) {
+    if ((target[key] === undefined) ||
+        //minimist sets undefined boolean flags to 'false'
+        // do not set both a qualified and unqualified value on boolean...
+        (target[key] === false)) {
         target[key] = value;
     }
 };
@@ -99,7 +111,8 @@ var that = {
                 return true;
             } else {
                 console.log('Invalid ' + x);
-                that.__usage__('Usage: cafjs run <dcinabox.js option> ' +
+                that.__usage__('Usage: cafjs run [--appImage <string>] ' +
+                               '[--ipAddress <string>] [--port <string>] ' +
                                'appLocalName [appWorkingDir] [host/app Vol]');
                 return false;
             }
@@ -107,7 +120,7 @@ var that = {
 
         var argv = parseArgs(args, {
             string : ['appImage', 'appLocalName', 'appWorkingDir',
-                      'hostVolume', 'appVolume'],
+                      'hostVolume', 'appVolume', 'ipAddress', 'port'],
             unknown: usage
         });
         var isPrototypeMode = (argv.appImage === undefined);
@@ -139,13 +152,15 @@ var that = {
                 return true;
             } else {
                 console.log('Invalid ' + x);
-                that.__usage__('Usage: cafjs device <simdevice.js option> ' +
+                that.__usage__('Usage: cafjs device [--ipAddress <string>] ' +
+                               '[--port <string>] [--appSuffix <string>] '  +
                                'deviceId (e.g., foo-device1)');
                 return false;
             }
         };
         var argv = parseArgs(args, {
-            string : ['deviceId', 'password', 'rootDir', 'appSuffix'],
+            string : ['deviceId', 'ipAddress', 'port', 'password', 'rootDir',
+                      'appSuffix'],
             unknown: usage
         });
         var options = argv._ || [];
@@ -163,12 +178,12 @@ var that = {
                 return true;
             } else {
                 console.log('Invalid ' + x);
-                that.__usage__('Usage: cafjs mkImage src imageName');
+                that.__usage__('Usage: cafjs mkImage src imageName [iot]');
                 return false;
             }
         };
         var argv = parseArgs(args, {
-            string : ['src', 'container'],
+            string : ['src', 'image'],
             unknown: usage
         });
         var options = argv._ || [];
@@ -177,12 +192,40 @@ var that = {
         if (!argv.src) {
             usage('--src');
         }
-        var container = options.shift();
-        condInsert(argv, 'container', container);
-        if (!argv.container) {
-            usage('--container');
+        var image = options.shift();
+        condInsert(argv, 'image', image);
+        if (!argv.image) {
+            usage('--image');
         }
-        that.__spawn__('mkContainer.js', argsToArray(argv));
+        var iot = (options.shift() === 'true');
+
+        if (fs.statSync(argv.src).isDirectory()) {
+            // pack first
+            var id = myUtils.uniqueId().replace(/[/]/g, '1');
+            var tmpTar = path.join(os.tmpdir(), 'app_' + id + '.tgz');
+            var packArgs = ['pack', iot, argv.src, tmpTar];
+            that.__spawn__('caf.js', packArgs, function(err) {
+                if (err) {
+                    try {rimraf.sync(tmpTar);} catch(_err) {};
+                    console.log('Cannot pack directory');
+                    console.log(myUtils.errToPrettyStr(err));
+                } else {
+                    argv.src = tmpTar;
+                    that.__spawn__('mkContainerImage.js', argsToArray(argv),
+                                   function(err) {
+                                       try {
+                                           rimraf.sync(tmpTar);
+                                       } catch(_err) {};
+                                       if (err) {
+                                           var e = myUtils.errToPrettyStr(err);
+                                           console.log(e);
+                                       }
+                                   });
+                }
+            });
+        } else {
+            that.__spawn__('mkContainerImage.js', argsToArray(argv));
+        }
     },
 
     mkIoTImage: function(args) {
@@ -232,6 +275,35 @@ var that = {
         var rootDir = options.shift();
         condInsert(argv, 'rootDir', rootDir || process.cwd());
         that.__spawn__('mkStatic.js', argsToArray(argv));
+    },
+
+    pack: function(args) {
+        var usage = function(x) {
+            if (x.indexOf('--') !== 0) {
+                return true;
+            } else {
+                console.log('Invalid ' + x);
+                that.__usage__('Usage: cafjs pack [iot] [appDir] [tarFile]' +
+                               ' [workspacesDir]');
+                return false;
+            }
+        };
+        var argv = parseArgs(args, {
+            string : ['appDir', 'workspacesDir', 'tarFile'],
+            boolean: ['iot'],
+            unknown: usage
+        });
+
+        var options = argv._ || [];
+        var iot = (options.shift() === 'true');
+        condInsert(argv, 'iot', iot);
+        var appDir = options.shift();
+        condInsert(argv, 'appDir', appDir || process.cwd());
+        var tarFile = options.shift();
+        tarFile && condInsert(argv, 'tarFile', tarFile);
+        var workspacesDir = options.shift();
+        workspacesDir && condInsert(argv, 'workspacesDir', workspacesDir);
+        that.__spawn__('mkPack.js', argsToArray(argv));
     },
 
     help: function(args) {

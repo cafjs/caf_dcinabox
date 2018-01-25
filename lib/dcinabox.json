@@ -89,7 +89,7 @@
             "module": "./plug_container",
             "description": "Plug that creates the accounts service.\n Properties: \n",
             "env": {
-                "image" : "registry.cafjs.com:32000/root-accounts:latest",
+                "image" : "registry.cafjs.com:32000/root-accounts",
                 "hostname" : "root-accounts",
                 "registryUsername" : "$._.env.registryUsername",
                 "registryPassword" : "$._.env.registryPassword",
@@ -125,7 +125,7 @@
             "module": "./plug_container",
             "description": "Plug that creates the launcher service.\n Properties: \n",
             "env": {
-                "image" : "registry.cafjs.com:32000/root-launcher:latest",
+                "image" : "registry.cafjs.com:32000/root-launcher",
                 "hostname" : "root-launcher",
                 "registryUsername" : "$._.env.registryUsername",
                 "registryPassword" : "$._.env.registryPassword",

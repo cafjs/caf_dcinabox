@@ -2,13 +2,16 @@
 var daemon = require('./index.js');
 var parseArgs = require('minimist');
 
+var XIP_SUFFIX = 'xip.io';
+
 var usage = function() {
-    console.log('Usage: dcinabox.js --appLocalName <string> --appImage <string> [--appWorkingDir <string>] [--hostVolume <string>] [--appVolume <string>]' );
+    console.log('Usage: dcinabox.js --appLocalName <string> --ipAddress <string> --port <string> --appImage <string> [--appWorkingDir <string>] [--hostVolume <string>] [--appVolume <string>]' );
     process.exit(1);
 };
 
 var argv = parseArgs(process.argv.slice(2), {
-    string : ['appImage', 'appLocalName', 'appWorkingDir', 'hostVolume', 'appVolume'],
+    string : ['appImage', 'appLocalName', 'appWorkingDir', 'ipAddress', 'port',
+              'hostVolume', 'appVolume'],
     alias: {i: 'appImage', n : 'appLocalName', h : 'appWorkingDir',
             v: 'hostVolume', a: 'appVolume'},
     unknown: usage
@@ -28,6 +31,30 @@ addOpt('appLocalName');
 addOpt('appWorkingDir');
 addOpt('hostVolume');
 addOpt('appVolume');
+addOpt('ipAddress');
+addOpt('port');
+
+if (typeof spec.env.ipAddress === 'string') {
+    //using an externally visible address
+    process.env.APP_SUFFIX = spec.env.ipAddress + '.' + XIP_SUFFIX;
+    process.env.HOST_IP=spec.env.ipAddress;
+    if (spec.env.port) {
+        process.env.HTTP_EXTERNAL_PORT = spec.env.port;
+        process.env.ACCOUNTS_URL='http://root-accounts.' +
+            spec.env.ipAddress +  '.' + XIP_SUFFIX + ':' + spec.env.port;
+        process.env.IOT_DEVICE_MANAGER_APP_URL = 'http://root-gadget.' +
+            spec.env.ipAddress +  '.' + XIP_SUFFIX + ':' + spec.env.port;
+    } else {
+        process.env.ACCOUNTS_URL='http://root-accounts.' +
+            spec.env.ipAddress +  '.' + XIP_SUFFIX;
+        process.env.IOT_DEVICE_MANAGER_APP_URL = 'http://root-gadget.' +
+            spec.env.ipAddress +  '.' + XIP_SUFFIX;
+    }
+    console.log(' **** USE URL http://root-launcher.'  +
+                spec.env.ipAddress +  '.' + XIP_SUFFIX +
+                (spec.env.port ?  ':' + spec.env.port : ''));
+}
+console.log(spec.env);
 
 if (spec.env.appLocalName && (spec.env.appImage)) {
     daemon.run([module], null, spec, function(err, top) {

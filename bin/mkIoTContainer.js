@@ -24,7 +24,7 @@ if (!argv.appLocalName || (typeof argv.privileged !== 'boolean')) {
 
 var args = [argv.appLocalName, (argv.privileged ? 'privileged' : '')];
 
-console.log('Starting mkIoTContainer.js');
+console.log('Starting mkIoTContainer.js. It can take a few minutes...');
 
 child_process.execFile(path.resolve(__dirname, 'mkIoTContainerImpl.sh'), args,
                        {maxBuffer: MAX_BUFFER},

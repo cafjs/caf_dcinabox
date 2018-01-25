@@ -1,17 +1,18 @@
 {
     "name": "caf_dcinabox",
     "description": "CAF tool to emulate locally the behavior of our cloud setup.",
-    "version": "0.2.25",
+    "version": "0.3.0",
     "author": "Antonio Lain <antlai@cafjs.com>",
     "dependencies": {
         "minimist" : "^1.2.0",
-        "caf_core": "^0.2.0",
-        "caf_srp": "^0.2.0",
+        "caf_core": "^0.3.0",
+        "caf_srp": "^0.3.0",
         "mkdirp": "^0.5.1",
-        "tar" : "^2.2.0",
+        "tar" : "^4.2.0",
         "rimraf" : "^2.5.0",
+        "rsync" : "^0.6.1",
         "fstream" : "^1.0.8",
-        "dockerode": "^2.3.0"
+        "dockerode": "^2.5.3"
     },
     "devDependencies": {
         "nodeunit" : ">=0.9",
@@ -25,6 +26,7 @@
         "test": "node ./node_modules/.bin/nodeunit",
         "build": "echo done",
         "docs" : "rm -fr docs; mkdir -p docs; ./node_modules/.bin/jsdoc --pedantic -c ./conf.json -d docs lib/*.js --readme ./README.md --package ./package.json"
+
     },
     "main": "index",
     "engines": { "node": ">= 0.10.29" }

@@ -2,6 +2,10 @@
 
 ## Make visible  a local daemon outside a host
 
+    cafjs run --appImage registry.cafjs.com:32000/root-helloiot --ipAddress 192.168.1.15 --port 8080 helloiot
+
+and internally this is what happens:
+
 change suffix to a wildcard DNS resolved to your IP address
 
     export APP_SUFFIX=192.168.1.15.xip.io
@@ -23,23 +27,25 @@ change the device manager service:
 
     export IOT_DEVICE_MANAGER_APP_URL=http://root-gadget.192.168.1.15.xip.io:8080
 
-now start the daemon
+and run the app with vanilla `cafjs run`
 
-    cafjs run <whatever>
 
-and use the url in the browser (the host should be in the 192.168.X.X subnet)
+use the url in the browser (the host should be in the 192.168.X.X subnet)
 
     http://root-launcher.192.168.1.15.xip.io:8080
 
 
-## Connect to a device in a different host
+## Connect a device running in a different host
 
-First generate a token (or alternatively cut/paste from device manager web page)
+    cafjs device --ipAddress 192.168.1.15 --port 8080 --password pleasechange foo-device1
+
+and this is equivalent to:
+
+generates a token (or alternatively cut/paste from device manager web page)
 
     docker run --rm -e ACCOUNTS_URL=http://root-accounts.192.168.1.15.xip.io:8080  -e MY_ID=foo-projector1 -e PASSWD=pleasechange -v /config-foo-projector1:/config registry.cafjs.com:32000/root-rpitoken
 
-and then start a management daemon with that token:
-
+and then starts a management daemon with that token:
 
     docker run -d --name=root-rpidaemon-foo-admin --restart=always -e MY_ID=foo-projector1 -v /var/run/docker.sock:/var/run/docker.sock  -v /config-foo-projector1:/config -e CONFIG_VOLUME=/config-foo-projector1 -e APP_PROTOCOL=http -e APP_SUFFIX=192.168.1.15.xip.io:8080 -e APP_DEVICES=[] registry.cafjs.com:32000/root-rpidaemon
 

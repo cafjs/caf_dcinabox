@@ -1,5 +1,5 @@
 #!/bin/bash
-ALL=`docker ps -f name=root- -q`
+ALL=`docker ps -af name=root- -q`
 if [ "$ALL" != "" ]; then
     docker rm -f ${ALL}
 fi
