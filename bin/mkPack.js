@@ -45,7 +45,7 @@ var id = myUtils.uniqueId().replace(/[/]/g, '1');
 var TMP_DIR = path.join(os.tmpdir(), id);
 
 var EXCLUDE_DIRS = ['node_modules', 'docs', 'test', 'examples', '.git', 'apps',
-                   'app'];
+                    'app', 'typescript'];
 
 /*
  *  Priority order:
