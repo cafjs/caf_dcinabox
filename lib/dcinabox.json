@@ -29,7 +29,7 @@
         "hostVolume" : "process.env.HOST_VOLUME||/tmp/application",
         "appVolume" : "process.env.APP_VOLUME||/usr/src/app2",
         "containerNameSuffix" : "process.env.CONTAINER_NAME_SUFFIX||",
-        "registryUsername" : "process.env.REGISTRY_USERNAME||foo",
+        "registryUsername" : "process.env.REGISTRY_USERNAME||null",
         "registryPassword" : "process.env.REGISTRY_PASSWORD||pleasechange"
     },
     "components": [
@@ -89,7 +89,7 @@
             "module": "./plug_container",
             "description": "Plug that creates the accounts service.\n Properties: \n",
             "env": {
-                "image" : "registry.cafjs.com:32000/root-accounts",
+                "image" : "gcr.io/cafjs-k8/root-accounts",
                 "hostname" : "root-accounts",
                 "registryUsername" : "$._.env.registryUsername",
                 "registryPassword" : "$._.env.registryPassword",
@@ -125,7 +125,7 @@
             "module": "./plug_container",
             "description": "Plug that creates the launcher service.\n Properties: \n",
             "env": {
-                "image" : "registry.cafjs.com:32000/root-launcher",
+                "image" : "gcr.io/cafjs-k8/root-launcher",
                 "hostname" : "root-launcher",
                 "registryUsername" : "$._.env.registryUsername",
                 "registryPassword" : "$._.env.registryPassword",
@@ -160,7 +160,7 @@
             "module": "./plug_container",
             "description": "Plug that creates the gadget service.\n Properties: \n",
             "env": {
-                "image" : "registry.cafjs.com:32000/root-gadget:latest",
+                "image" : "gcr.io/cafjs-k8/root-gadget:latest",
                 "hostname" : "root-gadget",
                 "registryUsername" : "$._.env.registryUsername",
                 "registryPassword" : "$._.env.registryPassword",
@@ -238,7 +238,7 @@
             "module": "./plug_container",
             "description": "Plug that creates an http proxy.\n Properties: \n",
             "env": {
-                "image" : "registry.cafjs.com:32000/root-netproxy:latest",
+                "image" : "gcr.io/cafjs-k8/root-netproxy:latest",
                 "hostname" : "root-netproxy",
                 "registryUsername" : "$._.env.registryUsername",
                 "registryPassword" : "$._.env.registryPassword",

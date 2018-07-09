@@ -2,7 +2,7 @@
 
 ## Make visible  a local daemon outside a host
 
-    cafjs run --appImage registry.cafjs.com:32000/root-helloiot --ipAddress 192.168.1.15 --port 8080 helloiot
+    cafjs run --appImage gcr.io/cafjs-k8/root-helloiot --ipAddress 192.168.1.15 --port 8080 helloiot
 
 and internally this is what happens:
 
@@ -43,10 +43,10 @@ and this is equivalent to:
 
 generates a token (or alternatively cut/paste from device manager web page)
 
-    docker run --rm -e ACCOUNTS_URL=http://root-accounts.192.168.1.15.xip.io:8080  -e MY_ID=foo-projector1 -e PASSWD=pleasechange -v /config-foo-projector1:/config registry.cafjs.com:32000/root-rpitoken
+    docker run --rm -e ACCOUNTS_URL=http://root-accounts.192.168.1.15.xip.io:8080  -e MY_ID=foo-projector1 -e PASSWD=pleasechange -v /config-foo-projector1:/config gcr.io/cafjs-k8/root-rpitoken
 
 and then starts a management daemon with that token:
 
-    docker run -d --name=root-rpidaemon-foo-admin --restart=always -e MY_ID=foo-projector1 -v /var/run/docker.sock:/var/run/docker.sock  -v /config-foo-projector1:/config -e CONFIG_VOLUME=/config-foo-projector1 -e APP_PROTOCOL=http -e APP_SUFFIX=192.168.1.15.xip.io:8080 -e APP_DEVICES=[] registry.cafjs.com:32000/root-rpidaemon
+    docker run -d --name=root-rpidaemon-foo-admin --restart=always -e MY_ID=foo-projector1 -v /var/run/docker.sock:/var/run/docker.sock  -v /config-foo-projector1:/config -e CONFIG_VOLUME=/config-foo-projector1 -e APP_PROTOCOL=http -e APP_SUFFIX=192.168.1.15.xip.io:8080 -e APP_DEVICES=[] gcr.io/cafjs-k8/root-rpidaemon
 
 we set `APP_DEVICES=[]` when the device is not a Raspberry Pi and has no GPIO pins...

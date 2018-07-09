@@ -42,8 +42,8 @@ For example, in *Quick prototyping mode*:
 
 and in *Validation mode*:
 
-    cafjs mkImage $HOME/caf/apps/caf_helloworld registry.cafjs.com:32000/root-helloworld
-    cafjs run --appImage registry.cafjs.com:32000/root-helloworld helloworld
+    cafjs mkImage $HOME/caf/apps/caf_helloworld gcr.io/cafjs-k8/root-helloworld
+    cafjs run --appImage gcr.io/cafjs-k8/root-helloworld helloworld
 
 
 #### `cafjs build`
@@ -135,8 +135,8 @@ and the browser should now show the new input for pin `11`.
 Build the container image, and run the app and device:
 
     cd $HOME/caf/apps/caf_helloiot
-    cafjs mkImage . registry.cafjs.com:32000/root-helloiot
-    cafjs run --appImage registry.cafjs.com:32000/root-helloiot helloiot
+    cafjs mkImage . gcr.io/cafjs-k8/root-helloiot
+    cafjs run --appImage gcr.io/cafjs-k8/root-helloiot helloiot
     cafjs device foo-device1
 
 The setup is similar to the previous case. In fact, since the `Redis` container persists changes in a host volume, all your CAs should still be there.
@@ -146,7 +146,7 @@ The setup is similar to the previous case. In fact, since the `Redis` container 
 
 Use an external network interface for the service. For example, if `192.168.1.15` is the address of `wlan0` in my laptop:
 
-    cafjs run --appImage registry.cafjs.com:32000/root-helloiot --ipAddress 192.168.1.15 --port 8080 helloiot
+    cafjs run --appImage gcr.io/cafjs-k8/root-helloiot --ipAddress 192.168.1.15 --port 8080 helloiot
 
 and, in a different computer connected to the same wireless LAN, type
 

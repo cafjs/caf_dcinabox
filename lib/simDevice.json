@@ -4,7 +4,7 @@
     "description" : "Device supervisor",
     "env" : {
          "deviceId" : "process.env.DEVICE_ID||foo-device1",
-        "appImage" : "process.env.APP_IMAGE||registry.cafjs.com:32000/root-rpidaemon",
+        "appImage" : "process.env.APP_IMAGE||gcr.io/cafjs-k8/root-rpidaemon",
         "appProtocol" : "process.env.APP_PROTOCOL||http",
         "appPublisher" :"process.env.APP_PUBLISHER||root",
         "appLocalName" : "process.env.APP_LOCAL_NAME||gadget",

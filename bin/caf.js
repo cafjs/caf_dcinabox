@@ -140,7 +140,7 @@ var that = {
         hostVolume && condInsert(argv, 'hostVolume', hostVolume);
         hostVolume && condInsert(argv, 'appVolume', hostVolume);
         var appImage = process.env['APP_IMAGE'] ||
-                'registry.cafjs.com:32000/root-generic';
+                'gcr.io/cafjs-k8/root-generic';
         condInsert(argv, 'appImage', appImage);
         console.log(JSON.stringify(argsToArray(argv)));
         that.__spawn__('../dcinabox.js', argsToArray(argv));
