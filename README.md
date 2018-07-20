@@ -21,6 +21,8 @@ The other arguments, e.g., `arg1`, `arg2`, are ordered. Positional arguments can
 
 Starts a simulated cloud to run your app. Uses separate Docker containers for a HAProxy-based http router, a Redis backend, and supporting apps for authentication, managing CAs, or registering devices.
 
+The application can also be directly accessed using the http HOST `localhost`, i.e.,`http://localhost:<externalPort>`. Some browser features are only enabled with https or http with `localhost`, i.e., will not work with `*.vcap.me`. A valid token in the URL is required.
+
 Two common usecases of `cafjs run`:
 
 *  *Quick prototyping mode*: when creating a fresh container image is too expensive. Instead, build the app outside the container (`cafjs build`), and mount the host directory in a generic container image.

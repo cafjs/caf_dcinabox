@@ -23,6 +23,7 @@
         "redisHost" : "process.env.REDIS_HOST||root-redis",
         "redisVolume" : "process.env.REDIS_VOLUME||/tmp/redis",
         "hostIp" : "process.env.HOST_IP||127.0.0.1",
+        "containerPort" : "process.env.CONTAINER_PORT||3000",
         "accountsURL" : "process.env.ACCOUNTS_URL||http://root-accounts.vcap.me:3000",
         "iotDeviceManagerAppURL":"process.env.IOT_DEVICE_MANAGER_APP_URL||http://root-gadget.vcap.me:3000",
         "appWorkingDir" : "process.env.APP_WORKING_DIR||/usr/src/app",
@@ -98,7 +99,7 @@
                     {
                         "hostIp" : "$._.env.hostIp",
                         "hostPort" : 3000,
-                        "containerPort" : 3000
+                        "containerPort" : "$._.env.containerPort"
                     }
                 ],
                 "services" : [ "root-redis"],
@@ -110,6 +111,7 @@
                     "PUBLIC_KEY_FILE" : "rsa_pub.pem.dummy",
                     "PRIVATE_KEY_FILE" : "rsa_priv.pem.dummy",
                     "HOST": "root-accounts",
+                    "PORT0": "$._.env.containerPort",
                     "REDIS_PAAS" : "ignore",
                     "REDIS_PORT_6379_TCP_PORT" :  "$._.env.redisPort",
                     "REDIS_PORT_6379_TCP_ADDR" : "$._.env.redisHost",
@@ -134,7 +136,7 @@
                     {
                         "hostIp" : "$._.env.hostIp",
                         "hostPort" : 3001,
-                        "containerPort" : 3000
+                        "containerPort" : "$._.env.containerPort"
                     }
                 ],
                 "services" : [ "root-redis"],
@@ -144,6 +146,7 @@
                 "props" : {
                     "TRUSTED_PUB_KEY_FILE" : "rsa_pub.pem.dummy",
                     "HOST": "root-launcher",
+                    "PORT0": "$._.env.containerPort",
                     "REDIS_PAAS" : "ignore",
                     "REDIS_PORT_6379_TCP_PORT" :  "$._.env.redisPort",
                     "REDIS_PORT_6379_TCP_ADDR" : "$._.env.redisHost",
@@ -169,7 +172,7 @@
                     {
                         "hostIp" : "$._.env.hostIp",
                         "hostPort" : 3012,
-                        "containerPort" : 3000
+                        "containerPort" : "$._.env.containerPort"
                     }
                 ],
                 "cmdArray" : "$._.env.cmdArray",
@@ -178,6 +181,7 @@
                 "networks": ["network"],
                 "props" : {
                     "TRUSTED_PUB_KEY_FILE" : "rsa_pub.pem.dummy",
+                    "PORT0": "$._.env.containerPort",
                     "HOST": "root-gadget",
                     "REDIS_PAAS" : "ignore",
                     "REDIS_PORT_6379_TCP_PORT" :  "$._.env.redisPort",
@@ -204,7 +208,7 @@
                     {
                         "hostIp" : "$._.env.hostIp",
                         "hostPort" : 3003,
-                        "containerPort" : 3000
+                        "containerPort" : "$._.env.containerPort"
                     }
                 ],
                 "volumes" : [
@@ -222,6 +226,7 @@
                     "APP_LOCAL_NAME" : "$._.env.appLocalName",
                     "TRUSTED_PUB_KEY_FILE" : "rsa_pub.pem.dummy",
                     "HOST": "root-application",
+                    "PORT0": "$._.env.containerPort",
                     "REDIS_PAAS" : "ignore",
                     "REDIS_PORT_6379_TCP_PORT" :  "$._.env.redisPort",
                     "REDIS_PORT_6379_TCP_ADDR" : "$._.env.redisHost",
@@ -263,7 +268,8 @@
                     "APP_LOCAL_NAME" : "netproxy",
                     "APP_PROTOCOL" : "$._.env.appProtocol",
                     "APP_PUBLISHER" : "$._.env.appPublisher",
-                    "APP_SUFFIX" :"$._.env.appSuffix"
+                    "APP_SUFFIX" :"$._.env.appSuffix",
+                    "LOCALHOST_PORT" : "$._.env.containerPort"
                 }
             }
         }

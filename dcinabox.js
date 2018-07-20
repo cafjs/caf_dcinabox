@@ -53,7 +53,19 @@ if (typeof spec.env.ipAddress === 'string') {
     console.log(' **** USE URL http://root-launcher.'  +
                 spec.env.ipAddress +  '.' + XIP_SUFFIX +
                 (spec.env.port ?  ':' + spec.env.port : ''));
+} else if (spec.env.port) {
+    var appSuffix = process.env.APP_SUFFIX || 'vcap.me';
+    process.env.HTTP_EXTERNAL_PORT = spec.env.port;
+    process.env.CONTAINER_PORT = spec.env.port; // container port === external
+    process.env.ACCOUNTS_URL='http://root-accounts.' + appSuffix +
+        ':' + spec.env.port;
+    process.env.IOT_DEVICE_MANAGER_APP_URL = 'http://root-gadget.' + appSuffix +
+        ':' + spec.env.port;
+    console.log(' **** USE URL http://root-launcher.'  + appSuffix +
+                ':' + spec.env.port);
 }
+
+
 console.log(spec.env);
 
 if (spec.env.appLocalName && (spec.env.appImage)) {
