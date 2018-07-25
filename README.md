@@ -37,6 +37,7 @@ The `run_options` to `cafjs run` are:
 * `--appVolume <string>` The internal container directory where the `hostVolume` is mounted (*quick prototyping mode* only). Defaults to `$HOME`.
 * `--ipAddress <string>` The network interface for the service. Defaults to `localhost`.
 * `--port <number>` The port number for the service. Defaults to port 80.
+* `--debugApplication <boolean>` Start the node debugger listening on host port 9229 (app only).
 
 For example, in *Quick prototyping mode*:
 

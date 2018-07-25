@@ -5,15 +5,16 @@ var parseArgs = require('minimist');
 var XIP_SUFFIX = 'xip.io';
 
 var usage = function() {
-    console.log('Usage: dcinabox.js --appLocalName <string> --ipAddress <string> --port <string> --appImage <string> [--appWorkingDir <string>] [--hostVolume <string>] [--appVolume <string>]' );
+    console.log('Usage: dcinabox.js --appLocalName <string> --ipAddress <string> --port <string> --appImage <string> [--appWorkingDir <string>] [--hostVolume <string>] [--appVolume <string>] [--debugApplication <boolean>]' );
     process.exit(1);
 };
 
 var argv = parseArgs(process.argv.slice(2), {
     string : ['appImage', 'appLocalName', 'appWorkingDir', 'ipAddress', 'port',
               'hostVolume', 'appVolume'],
+    boolean : ['debugApplication'],
     alias: {i: 'appImage', n : 'appLocalName', h : 'appWorkingDir',
-            v: 'hostVolume', a: 'appVolume'},
+            v: 'hostVolume', a: 'appVolume', d: 'debugApplication'},
     unknown: usage
 });
 
@@ -33,6 +34,7 @@ addOpt('hostVolume');
 addOpt('appVolume');
 addOpt('ipAddress');
 addOpt('port');
+addOpt('debugApplication'); // default is 'false', so noop is ok...
 
 if (typeof spec.env.ipAddress === 'string') {
     //using an externally visible address
@@ -67,6 +69,10 @@ if (typeof spec.env.ipAddress === 'string') {
 
 
 console.log(spec.env);
+
+if (spec.env.debugApplication) {
+    process.env.NODE_DEBUG_OPTIONS="--inspect=0.0.0.0:9229";
+}
 
 if (spec.env.appLocalName && (spec.env.appImage)) {
     daemon.run([module], null, spec, function(err, top) {

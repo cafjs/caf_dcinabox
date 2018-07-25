@@ -24,6 +24,9 @@
         "redisVolume" : "process.env.REDIS_VOLUME||/tmp/redis",
         "hostIp" : "process.env.HOST_IP||127.0.0.1",
         "containerPort" : "process.env.CONTAINER_PORT||3000",
+        "debuggerPort" : "process.env.DEBUGGER_PORT||9229",
+        "debugApplication" : "process.env.DEBUG_APPLICATION||false",
+        "nodeDebugOptions" : "process.env.NODE_DEBUG_OPTIONS||",
         "accountsURL" : "process.env.ACCOUNTS_URL||http://root-accounts.vcap.me:3000",
         "iotDeviceManagerAppURL":"process.env.IOT_DEVICE_MANAGER_APP_URL||http://root-gadget.vcap.me:3000",
         "appWorkingDir" : "process.env.APP_WORKING_DIR||/usr/src/app",
@@ -209,6 +212,11 @@
                         "hostIp" : "$._.env.hostIp",
                         "hostPort" : 3003,
                         "containerPort" : "$._.env.containerPort"
+                    },
+                    {
+                        "hostIp" : "$._.env.hostIp",
+                        "hostPort" : 9229,
+                        "containerPort" : "$._.env.debuggerPort"
                     }
                 ],
                 "volumes" : [
@@ -234,7 +242,9 @@
                     "APP_PUBLISHER" : "$._.env.appPublisher",
                     "APP_SUFFIX" :"$._.env.appSuffix",
                     "ACCOUNTS_URL" : "$._.env.accountsURL",
-                    "IOT_DEVICE_MANAGER_APP_URL" : "$._.env.iotDeviceManagerAppURL"
+                    "IOT_DEVICE_MANAGER_APP_URL" : "$._.env.iotDeviceManagerAppURL",
+                    "DEBUGGER" : "$._.env.debugApplication",
+                    "NODE_OPTIONS" : "$._.env.nodeDebugOptions"
                 }
             }
         },

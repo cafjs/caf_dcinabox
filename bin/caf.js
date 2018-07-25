@@ -113,6 +113,7 @@ var that = {
                 console.log('Invalid ' + x);
                 that.__usage__('Usage: cafjs run [--appImage <string>] ' +
                                '[--ipAddress <string>] [--port <string>] ' +
+                               '[--debugApplication <boolean>] ' +
                                'appLocalName [appWorkingDir] [host/app Vol]');
                 return false;
             }
@@ -121,6 +122,7 @@ var that = {
         var argv = parseArgs(args, {
             string : ['appImage', 'appLocalName', 'appWorkingDir',
                       'hostVolume', 'appVolume', 'ipAddress', 'port'],
+            boolean : ['debugApplication'],
             unknown: usage
         });
         var isPrototypeMode = (argv.appImage === undefined);
