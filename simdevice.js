@@ -10,13 +10,14 @@ var DEFAULT_APP_SUFFIX='vcap.me';
 var XIP_SUFFIX='xip.io';
 
 var usage = function() {
-    console.log('Usage: simdevice.js --deviceId <string, e.g., foo-device1> --password <string> --rootDir <string> [--ipAddress <string>] [--port <string>] [--appSuffix <string>]');
+    console.log('Usage: simdevice.js --deviceId <string, e.g., foo-device1> --password <string> --rootDir <string> [--ipAddress <string>] [--port <string>] [--appSuffix <string>] [--debugApplication <boolean>]');
     process.exit(1);
 };
 
 var argv = parseArgs(process.argv.slice(2), {
     string : ['deviceId', 'password', 'rootDir', 'appSuffix', 'ipAddress',
               'port'],
+    boolean : ['debugApplication'],
     alias: {d : 'deviceId', p: 'password', r : 'rootDir', a : 'appSuffix'},
     unknown: usage
 });
@@ -38,6 +39,7 @@ addOpt('rootDir', DEFAULT_ROOT_DIR);
 addOpt('appSuffix', DEFAULT_APP_SUFFIX);
 addOpt('ipAddress');
 addOpt('port');
+addOpt('debugApplication'); // default is 'false', so noop is ok...
 
 var isXip = function(x) {
     return x.split(':')[0].endsWith(XIP_SUFFIX);
@@ -61,6 +63,12 @@ if (isXip(spec.env.appSuffix)) {
 spec.env.configVolume = spec.env.rootDir + '/' + spec.env.deviceId +
     '/config';
 
+
+if (spec.env.debugApplication) {
+    // TO DO: choose port # from command line for multi-device
+    process.env.DEBUGGER_PORT="9230";
+    process.env.NODE_DEBUG_OPTIONS="--inspect=0.0.0.0:9230";
+}
 
 daemon.run([module], 'simDevice.json', spec, function(err, top) {
     if (err) {

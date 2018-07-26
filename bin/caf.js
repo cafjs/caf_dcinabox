@@ -156,6 +156,7 @@ var that = {
                 console.log('Invalid ' + x);
                 that.__usage__('Usage: cafjs device [--ipAddress <string>] ' +
                                '[--port <string>] [--appSuffix <string>] '  +
+                                '[--debugApplication <boolean>] ' +
                                'deviceId (e.g., foo-device1)');
                 return false;
             }
@@ -163,6 +164,7 @@ var that = {
         var argv = parseArgs(args, {
             string : ['deviceId', 'ipAddress', 'port', 'password', 'rootDir',
                       'appSuffix'],
+            boolean : ['debugApplication'],
             unknown: usage
         });
         var options = argv._ || [];

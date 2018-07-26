@@ -22,6 +22,9 @@
         "cmdArray" : "process.env.CMD_ARRAY||[]",
         "netName" : "process.env.NET_NAME||host",
         "netAlreadyCreated" : "process.env.NET_ALREADY_CREATED||true",
+        "debugApplication" : "process.env.DEBUG_APPLICATION||false",
+        "debuggerPort" : "process.env.DEBUGGER_PORT||9230",
+        "nodeDebugOptions" : "process.env.NODE_DEBUG_OPTIONS||",
         "accountsURL" : "process.env.ACCOUNTS_URL||http://root-accounts.vcap.me"
     },
     "components": [
@@ -96,6 +99,9 @@
                     "NET_NAME": "$._.env.netName",
                     "NET_ALREADY_CREATED" :  "$._.env.netAlreadyCreated",
                     "ACCOUNTS_URL" : "$._.env.accountsURL",
+                    "DEBUG_APPLICATION": "$._.env.debugApplication",
+                    "NODE_DEBUG_OPTIONS" : "$._.env.nodeDebugOptions",
+                    "DEBUGGER_PORT" : "$._.env.debuggerPort",
                     "CONFIG_VOLUME" : "$._.env.configVolume"
                 }
             }
