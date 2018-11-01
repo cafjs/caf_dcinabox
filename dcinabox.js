@@ -42,11 +42,13 @@ if (typeof spec.env.ipAddress === 'string') {
     process.env.HOST_IP=spec.env.ipAddress;
     if (spec.env.port) {
         process.env.HTTP_EXTERNAL_PORT = spec.env.port;
+        process.env.HTTP_INTERNAL_PORT = spec.env.port;
         process.env.ACCOUNTS_URL='http://root-accounts.' +
             spec.env.ipAddress +  '.' + XIP_SUFFIX + ':' + spec.env.port;
         process.env.IOT_DEVICE_MANAGER_APP_URL = 'http://root-gadget.' +
             spec.env.ipAddress +  '.' + XIP_SUFFIX + ':' + spec.env.port;
     } else {
+        process.env.HTTP_INTERNAL_PORT = null; //using default port, i.e., 80
         process.env.ACCOUNTS_URL='http://root-accounts.' +
             spec.env.ipAddress +  '.' + XIP_SUFFIX;
         process.env.IOT_DEVICE_MANAGER_APP_URL = 'http://root-gadget.' +
@@ -58,6 +60,7 @@ if (typeof spec.env.ipAddress === 'string') {
 } else if (spec.env.port) {
     var appSuffix = process.env.APP_SUFFIX || 'vcap.me';
     process.env.HTTP_EXTERNAL_PORT = spec.env.port;
+    process.env.HTTP_INTERNAL_PORT = spec.env.port;
     process.env.CONTAINER_PORT = spec.env.port; // container port === external
     process.env.ACCOUNTS_URL='http://root-accounts.' + appSuffix +
         ':' + spec.env.port;

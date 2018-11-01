@@ -18,6 +18,11 @@ change ip address to external interface:
 
     export HTTP_EXTERNAL_PORT=8080
 
+change the internal http port from the default 3000 to:
+
+    export HTTP_INTERNAL_PORT=null (when HTTP_EXTERNAL_PORT was not set) or
+    export HTTP_INTERNAL_PORT=HTTP_EXTERNAL_PORT
+
 change the accounts service:
 
     export ACCOUNTS_URL=http://root-accounts.192.168.1.15.xip.io:8080
