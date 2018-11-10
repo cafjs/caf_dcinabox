@@ -233,6 +233,9 @@
                 "cmdArray" : "$._.env.cmdArray",
                 "privileged" : false,
                 "networks": ["network"],
+                "networkAlias" : [
+                    "$._.env.appPublisher", "$._.env.appLocalName"
+                ],
                 "workingDir" : "$._.env.appWorkingDir",
                 "props" : {
                     "APP_LOCAL_NAME" : "$._.env.appLocalName",
