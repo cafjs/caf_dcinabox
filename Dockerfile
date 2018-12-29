@@ -5,7 +5,7 @@
 # TO_BUILD:       cafjs mkImage . gcr.io/cafjs-k8/root-dcinabox
 # TO_RUN:         docker run  --privileged -v /var/run/docker.sock:/var/run/docker.sock  -v /usr/bin/docker:/bin/docker   gcr.io/cafjs-k8/root-dcinabox  --appLocalName application --appImage gcr.io/cafjs-k8/root-helloworld
 
-FROM node:8
+FROM node:10
 
 EXPOSE 3000
 

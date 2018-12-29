@@ -27,7 +27,7 @@ var spec = { env : {}};
 var addOpt = function(x, defaultValue) {
     if (argv[x]) {
         spec.env[x] = argv[x];
-    } else {
+    } else if (typeof defaultValue !== 'undefined') {
         spec.env[x] = defaultValue;
     }
 };
