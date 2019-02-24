@@ -35,7 +35,8 @@
         "appVolume" : "process.env.APP_VOLUME||/usr/src/app2",
         "containerNameSuffix" : "process.env.CONTAINER_NAME_SUFFIX||",
         "registryUsername" : "process.env.REGISTRY_USERNAME||null",
-        "registryPassword" : "process.env.REGISTRY_PASSWORD||pleasechange"
+        "registryPassword" : "process.env.REGISTRY_PASSWORD||pleasechange",
+        "defaultUnits" : "process.env.DEFAULT_UNITS||10"
     },
     "components": [
         {
@@ -87,6 +88,45 @@
                 "networks": ["network"],
                 "privileged" : false,
                 "cmdArray" : ["redis-server", "--appendonly", "yes"]
+            }
+        },
+        {
+            "name": "root-people",
+            "module": "./plug_container",
+            "description": "Plug that creates the people service.\n Properties: \n",
+            "env": {
+                "image" : "gcr.io/cafjs-k8/root-people:latest",
+                "hostname" : "root-people",
+                "registryUsername" : "$._.env.registryUsername",
+                "registryPassword" : "$._.env.registryPassword",
+                "containerNameSuffix" : "$._.env.containerNameSuffix",
+                "ports" : [
+                    {
+                        "hostIp" : "$._.env.hostIp",
+                        "hostPort" : 3013,
+                        "containerPort" : "$._.env.containerPort"
+                    }
+                ],
+                "cmdArray" : "$._.env.cmdArray",
+                "services" : [ "root-redis"],
+                "privileged" : false,
+                "networks": ["network"],
+                "props" : {
+                    "TRUSTED_PUB_KEY_FILE" : "rsa_pub.pem.dummy",
+                    "PORT0": "$._.env.containerPort",
+                    "HOST": "root-people",
+                    "REDIS_PAAS" : "ignore",
+                    "REDIS_PORT_6379_TCP_PORT" :  "$._.env.redisPort",
+                    "REDIS_PORT_6379_TCP_ADDR" : "$._.env.redisHost",
+                    "APP_LOCAL_NAME" : "people",
+                    "APP_PROTOCOL" : "$._.env.appProtocol",
+                    "APP_PUBLISHER" : "$._.env.appPublisher",
+                    "APP_PORT" :"$._.env.httpInternalPort",
+                    "APP_SUFFIX" :"$._.env.appSuffix",
+                    "ACCOUNTS_URL" : "$._.env.accountsURL",
+                    "PRE_REGISTER_APP_LOCAL_NAME" : "$._.env.appLocalName",
+                    "DEFAULT_UNITS" : "$._.env.defaultUnits"
+                }
             }
         },
         {
