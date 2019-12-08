@@ -53,6 +53,29 @@ and in *Validation mode*:
 
 Wrapper to `yarn` to build an application in the current directory using local dependencies. It assumes yarn workspaces, and a target task `build` in `package.json`.
 
+#### `cafjs generate <generate_options> <appName> [target] [appDir] [appConfig]`
+
+Creates an application skeleton using the following `target` of increasing app complexity:
+
+* `cloud`: Simple CA with a command line interface.
+
+* `web` (or `default`): Add a React+Redux web frontend to `cloud`.
+
+* `iot`: Add support for an iot device, e.g., a Rasperry Pi, to `web`.
+
+* `vr`: Add a virtual reality interface to `iot` using Aframe.
+
+Note that `target` defaults to `web`.
+
+The `generate_options` to `cafjs generate` are:
+
+* `--templateImage <string>` An optional Docker image that contains the template targets. It defaults to `gcr.io/cafjs-k8/root-template`. See the example in https://github.com/cafjs/caf_template.git to create your own. Custom images could enable new values for the `target` argument.
+
+The argument `<appName>` is the name of your new application.
+
+`<appDir>` is the directory where the app will be written (defaults to `$PWD`).
+
+`<appConfig>` is a file with extra properties to instantiate the app template. It defaults to `generate.json` in the `caf_dcinabox/bin` directory. It leverages the CAF.js standard preprocessing of json component descriptions, so that it can default to system environment properties.
 
 #### `cafjs reset`
 

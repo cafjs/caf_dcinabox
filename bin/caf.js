@@ -12,7 +12,7 @@ var async = caf_comp.async;
 var myUtils = caf_comp.myUtils;
 
 var HELP = 'Usage: cafjs run|build|reset|device|mkImage|mkIoTImage|mkStatic|\
-pack|help \n\
+pack|generate|help \n\
 where: \n\
 *  run:  starts a simulated cloud that mounts an app local volume. \n\
 *  build: builds an application using local dependencies. \n\
@@ -22,12 +22,13 @@ where: \n\
 *  mkIoTImage: builds a Docker image for the device app. \n\
 *  mkStatic: creates a dependency file to load artifacts statically. \n\
 *  pack: packs an application embedded in yarn workspaces. \n\
+*  generate: creates an skeleton app using a template. \n\
 *  help [command]: prints this info or details of any of the above. \n\
 ';
 
 var usage = function() {
     console.log('Usage: cafjs run|build|reset|device|mkImage|mkIoTImage|\
-mkStatic|pack|help <...args...>');
+mkStatic|pack|generate|help <...args...>');
     process.exit(1);
 };
 
@@ -308,6 +309,46 @@ var that = {
         var workspacesDir = options.shift();
         workspacesDir && condInsert(argv, 'workspacesDir', workspacesDir);
         that.__spawn__('mkPack.js', argsToArray(argv));
+    },
+
+    generate: function(args) {
+        var usage = function(x) {
+            if (x.indexOf('--') !== 0) {
+                return true;
+            } else {
+                console.log('Invalid ' + x);
+                that.__usage__('Usage: cafjs generate ' +
+                               '[--templateImage <string>] appName [target] ' +
+                               '[appDir] [appConfig] \n' +
+                               '  where target is, e.g., cloud|web|iot|vr' +
+                               ' and defaults to `web`');
+                return false;
+            }
+        };
+        var argv = parseArgs(args, {
+            string : ['templateImage', 'appName', 'target', 'appDir',
+                      'appConfig'],
+            unknown: usage
+        });
+
+        var options = argv._ || [];
+        var appName = options.shift();
+        condInsert(argv, 'appName', appName);
+        if (!argv.appName) {
+            usage('--appName');
+        }
+
+        var target = options.shift();
+        target && condInsert(argv, 'target', target);
+
+        var appDir = options.shift();
+        appDir = appDir || process.env['PWD'];
+        condInsert(argv, 'appDir', appDir);
+
+        var appConfig = options.shift();
+        appConfig && condInsert(argv, 'appConfig', appConfig);
+
+        that.__spawn__('generate.js', argsToArray(argv));
     },
 
     help: function(args) {

@@ -117,7 +117,7 @@ var rsync_copy = function(source, destination, exclude, cb) {
         source: source,
         destination: destination,
         exclude: exclude,
-        flags: 'av'
+        flags: 'a'
     });
 
     r.execute(function(err, code, cmd) {

@@ -1,0 +1,9 @@
+{
+    "name": "top",
+    "module" : null,
+    "env" : {
+        "appName": "process.env.APP_NAME||template",
+        "image" : "process.env.IMAGE||gcr.io/cafjs-k8/root-template",
+        "target" : "process.env.TARGET||default"
+    }
+}
