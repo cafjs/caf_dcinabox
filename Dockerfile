@@ -5,7 +5,7 @@
 # TO_BUILD:       cafjs mkImage . gcr.io/cafjs-k8/root-dcinabox
 # TO_RUN:         docker run  --privileged -v /var/run/docker.sock:/var/run/docker.sock  -v /usr/bin/docker:/bin/docker   gcr.io/cafjs-k8/root-dcinabox  --appLocalName application --appImage gcr.io/cafjs-k8/root-helloworld
 
-FROM node:10
+FROM node:12
 
 EXPOSE 3000
 
@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y rsync
 
 COPY . /usr/src
 
-RUN  cd /usr/src/app && yarn install  --ignore-optional && cafjs build &&  yarn install --production --ignore-optional && yarn cache clean
+RUN  cd /usr/src/app && yarn install  --ignore-optional && yarn run build &&  yarn install --production --ignore-optional && yarn cache clean
 
 WORKDIR /usr/src/app
 

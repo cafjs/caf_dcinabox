@@ -6,7 +6,7 @@
 # TO_RUN:         to use dcinabox with a local directory build, e.g.,
 # dcinabox.js --appLocalName helloworld --appImage gcr.io/cafjs-k8/root-generic --appWorkingDir $PWD --hostVolume $HOME --appVolume $HOME
 
-FROM node:10
+FROM node:12
 
 EXPOSE 3000
 
