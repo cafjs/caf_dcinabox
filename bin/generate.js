@@ -29,7 +29,7 @@ if (!argv.appName || !argv.appDir) {
     usage();
 }
 
-const loader = gen_loader.constructor();
+const loader = gen_loader.create();
 loader.__ca_setModules__([module]);
 const props = loader.__ca_loadDescription__(argv.appConfig || DEFAULT_JSON,
                                             true,
