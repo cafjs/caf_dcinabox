@@ -34,25 +34,28 @@ var buildImage = function(src, image, cb) {
     var docker = new Docker({socketPath: '/var/run/docker.sock'});
     console.log('Building image ' + image);
     var cb0 = callJustOnce(cb);
-    docker.buildImage(src, {t : image}, function(err, stream) {
-        if (err) {
-            cb0(err);
-        } else {
-            var onFinished = function(err, output) {
-                if (err) {
-                    err.output = output;
-                    cb0(err);
-                } else {
-//                    console.log(output);
-                    cb0(null);
-                }
-            };
-            var onProgress = function(event) {
-                console.log(event && event.stream);
-            };
-            docker.modem.followProgress(stream, onFinished, onProgress);
+    docker.buildImage(
+        // 'host' network  to enable mkStatic with BLE
+        src, {t : image, networkmode: 'host'}, function(err, stream) {
+            if (err) {
+                cb0(err);
+            } else {
+                var onFinished = function(err, output) {
+                    if (err) {
+                        err.output = output;
+                        cb0(err);
+                    } else {
+                        //                    console.log(output);
+                        cb0(null);
+                    }
+                };
+                var onProgress = function(event) {
+                    console.log(event && event.stream);
+                };
+                docker.modem.followProgress(stream, onFinished, onProgress);
+            }
         }
-    });
+    );
 };
 
 
