@@ -1,20 +1,22 @@
 #!/usr/bin/env node
-var parseArgs = require('minimist');
-var child_process = require('child_process');
-var path = require('path');
-var MAX_BUFFER = 1024 * 100000;
+'use strict';
+const parseArgs = require('minimist');
+const child_process = require('child_process');
+const path = require('path');
+const MAX_BUFFER = 1024 * 100000;
 
 
-var usage = function() {
-    console.log('Usage: mkIoTContainer.js --appLocalName <string> --privileged <boolean>');
+const usage = function() {
+    console.log('Usage: mkIoTContainer.js --appLocalName <string> ' +
+                '--privileged <boolean>');
     process.exit(1);
 };
 
 
-var argv = parseArgs(process.argv.slice(2), {
-    string : ['appLocalName'],
-    boolean : ['privileged'],
-    alias: {a : 'appLocalName', p: 'privileged'},
+const argv = parseArgs(process.argv.slice(2), {
+    string: ['appLocalName'],
+    boolean: ['privileged'],
+    alias: {a: 'appLocalName', p: 'privileged'},
     unknown: usage
 });
 
@@ -22,7 +24,7 @@ if (!argv.appLocalName || (typeof argv.privileged !== 'boolean')) {
     usage();
 }
 
-var args = [argv.appLocalName, (argv.privileged ? 'privileged' : '')];
+const args = [argv.appLocalName, (argv.privileged ? 'privileged' : '')];
 
 console.log('Starting mkIoTContainer.js. It can take a few minutes...');
 

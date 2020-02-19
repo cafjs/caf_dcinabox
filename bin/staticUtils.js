@@ -1,34 +1,34 @@
 'use strict';
-var fs = require('fs');
-var path = require('path');
-var assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const assert = require('assert');
 
 exports.resolveModules = function(scope, allModules) {
 
-    var resolveAsFile = function(x) {
+    const resolveAsFile = function(x) {
         return (fs.existsSync(x) || fs.existsSync(x + '.js') ||
                 fs.existsSync(x + '.json') || (fs.existsSync(x + '.node')));
     };
 
-    var resolveAsDir = function(x) {
-        return (fs.existsSync(path.resolve(x,'package.json')) ||
+    const resolveAsDir = function(x) {
+        return (fs.existsSync(path.resolve(x, 'package.json')) ||
                 fs.existsSync(path.resolve(x, 'index.js')) ||
                 fs.existsSync(path.resolve(x, 'index.json')) ||
                 fs.existsSync(path.resolve(x, 'index.node')));
     };
 
-    var hasPrefix = function(x) {
+    const hasPrefix = function(x) {
         return ((x.indexOf('/') === 0) || (x.indexOf('./') === 0) ||
                 (x.indexOf('../') === 0));
     };
 
-    var resolveOne = function(artifact) {
-        var mod = allModules[artifact];
-        var resolvedName = null;
-        var allPaths = (mod.paths && mod.paths.slice(0)) || [];
+    const resolveOne = function(artifact) {
+        const mod = allModules[artifact];
+        let resolvedName = null;
+        const allPaths = (mod.paths && mod.paths.slice(0)) || [];
         allPaths.unshift(path.dirname(mod.filename));
         allPaths.some(function(x) {
-            var artif = path.resolve(x, artifact);
+            const artif = path.resolve(x, artifact);
             if (resolveAsFile(artif) || resolveAsDir(artif)) {
                 resolvedName = artif;
                 return true;
@@ -41,7 +41,7 @@ exports.resolveModules = function(scope, allModules) {
         return (hasPrefix(resolvedName) ? resolvedName : './' + resolvedName);
     };
 
-    var result = {};
+    const result = {};
     Object.keys(allModules).forEach(function(x) {
         result[x] = resolveOne(x);
     });

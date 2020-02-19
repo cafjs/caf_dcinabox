@@ -1,29 +1,31 @@
 #!/usr/bin/env node
-var parseArgs = require('minimist');
-var caf_core =  require('caf_core');
-var caf_comp = caf_core.caf_components;
-var myUtils = caf_comp.myUtils;
-var caf_cli = caf_core.caf_cli;
-var srpClient = require('caf_srp').client;
+'use strict';
+const parseArgs = require('minimist');
+const caf_core = require('caf_core');
+const caf_comp = caf_core.caf_components;
+const myUtils = caf_comp.myUtils;
+const caf_cli = caf_core.caf_cli;
+const srpClient = require('caf_srp').client;
 
-var ACCOUNTS_URL = 'https://root-accounts.cafjs.com';
+const ACCOUNTS_URL = 'https://root-accounts.cafjs.com';
 
-var usage = function() {
-    console.log('Usage: deploy.js --url <string> --caName <string>  --password <string> --containerName <string> --op <restart>');
+const usage = function() {
+    console.log('Usage: deploy.js --url <string> --caName <string> ' +
+                '--password <string> --containerName <string> --op <restart>');
     process.exit(1);
 };
 
-var argv = parseArgs(process.argv.slice(2), {
-    string : ['url', 'caName', 'password',  'containerName', 'op'],
-    alias: {u : 'url', c: 'caName', p: 'password', co: 'containerName',
-            o : 'op'},
+const argv = parseArgs(process.argv.slice(2), {
+    string: ['url', 'caName', 'password', 'containerName', 'op'],
+    alias: {u: 'url', c: 'caName', p: 'password', co: 'containerName',
+            o: 'op'},
     unknown: usage
 });
 
-if (!argv.url || !argv.caName || !argv.containerName  || !argv.op ) {
+if (!argv.url || !argv.caName || !argv.containerName || !argv.op) {
     usage();
 }
-var specAll = {
+const specAll = {
     log: function(x) {
         console.log(x);
     },
@@ -35,7 +37,7 @@ var specAll = {
 };
 
 
-var s = new caf_cli.Session(argv.url, argv.caName, specAll);
+const s = new caf_cli.Session(argv.url, argv.caName, specAll);
 
 s.onopen = function() {
     if (argv.op === 'restart') {

@@ -1,12 +1,12 @@
 #!/usr/bin/env node
+'use strict';
 const child_process = require('child_process');
-var mustache = require('mustache');
+const mustache = require('mustache');
 const path = require('path');
 const fs = require('fs');
-const caf_core =  require('caf_core');
+const caf_core = require('caf_core');
 const caf_comp = caf_core.caf_components;
 const gen_loader = caf_comp.gen_loader;
-const myUtils = caf_comp.myUtils;
 const glob = require('glob');
 const parseArgs = require('minimist');
 
@@ -15,13 +15,15 @@ const DEFAULT_JSON = 'generate.json';
 const DEFAUL_SCRIPT = 'cpTemplate.sh';
 
 const usage = function() {
-    console.log('Usage: generate.js --appName <string> --appDir <string>  --appConfig <string> --target <string, e.g., cloud|web|iot|vr> [--templateImage <string>]');
+    console.log('Usage: generate.js --appName <string> --appDir <string> ' +
+                ' --appConfig <string> --target <string, e.g., ' +
+                'cloud|web|iot|vr> [--templateImage <string>]');
     process.exit(1);
 };
 
 
 const argv = parseArgs(process.argv.slice(2), {
-    string : ['templateImage', 'appName', 'appDir', 'appConfig', 'target'],
+    string: ['templateImage', 'appName', 'appDir', 'appConfig', 'target'],
     unknown: usage
 });
 

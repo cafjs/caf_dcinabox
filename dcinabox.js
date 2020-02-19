@@ -1,26 +1,30 @@
 #!/usr/bin/env node
-var daemon = require('./index.js');
-var parseArgs = require('minimist');
+'use strict';
+const daemon = require('./index.js');
+const parseArgs = require('minimist');
 
-var XIP_SUFFIX = 'xip.io';
+const XIP_SUFFIX = 'xip.io';
 
-var usage = function() {
-    console.log('Usage: dcinabox.js --appLocalName <string> --ipAddress <string> --port <string> --appImage <string> [--appWorkingDir <string>] [--hostVolume <string>] [--appVolume <string>] [--debugApplication <boolean>]' );
+const usage = function() {
+    console.log('Usage: dcinabox.js --appLocalName <string> ' +
+                '--ipAddress <string> --port <string> --appImage ' +
+                '<string> [--appWorkingDir <string>] [--hostVolume <string>] ' +
+                '[--appVolume <string>] [--debugApplication <boolean>]');
     process.exit(1);
 };
 
-var argv = parseArgs(process.argv.slice(2), {
-    string : ['appImage', 'appLocalName', 'appWorkingDir', 'ipAddress', 'port',
-              'hostVolume', 'appVolume'],
-    boolean : ['debugApplication'],
-    alias: {i: 'appImage', n : 'appLocalName', h : 'appWorkingDir',
+const argv = parseArgs(process.argv.slice(2), {
+    string: ['appImage', 'appLocalName', 'appWorkingDir', 'ipAddress', 'port',
+             'hostVolume', 'appVolume'],
+    boolean: ['debugApplication'],
+    alias: {i: 'appImage', n: 'appLocalName', h: 'appWorkingDir',
             v: 'hostVolume', a: 'appVolume', d: 'debugApplication'},
     unknown: usage
 });
 
-var spec = { env : {}};
+const spec = { env: {}};
 
-var addOpt = function(x){
+const addOpt = function(x){
     if (argv[x]) {
         spec.env[x] = argv[x];
     }
@@ -44,21 +48,21 @@ if (typeof spec.env.ipAddress === 'string') {
         process.env.HTTP_EXTERNAL_PORT = spec.env.port;
         process.env.HTTP_INTERNAL_PORT = spec.env.port;
         process.env.ACCOUNTS_URL='http://root-accounts.' +
-            spec.env.ipAddress +  '.' + XIP_SUFFIX + ':' + spec.env.port;
+            spec.env.ipAddress + '.' + XIP_SUFFIX + ':' + spec.env.port;
         process.env.IOT_DEVICE_MANAGER_APP_URL = 'http://root-gadget.' +
-            spec.env.ipAddress +  '.' + XIP_SUFFIX + ':' + spec.env.port;
+            spec.env.ipAddress + '.' + XIP_SUFFIX + ':' + spec.env.port;
     } else {
         process.env.HTTP_INTERNAL_PORT = null; //using default port, i.e., 80
         process.env.ACCOUNTS_URL='http://root-accounts.' +
-            spec.env.ipAddress +  '.' + XIP_SUFFIX;
+            spec.env.ipAddress + '.' + XIP_SUFFIX;
         process.env.IOT_DEVICE_MANAGER_APP_URL = 'http://root-gadget.' +
-            spec.env.ipAddress +  '.' + XIP_SUFFIX;
+            spec.env.ipAddress + '.' + XIP_SUFFIX;
     }
-    console.log(' **** USE URL http://root-launcher.'  +
-                spec.env.ipAddress +  '.' + XIP_SUFFIX +
-                (spec.env.port ?  ':' + spec.env.port : ''));
+    console.log(' **** USE URL http://root-launcher.' +
+                spec.env.ipAddress + '.' + XIP_SUFFIX +
+                (spec.env.port ? ':' + spec.env.port : ''));
 } else if (spec.env.port) {
-    var appSuffix = process.env.APP_SUFFIX || 'vcap.me';
+    const appSuffix = process.env.APP_SUFFIX || 'vcap.me';
     process.env.HTTP_EXTERNAL_PORT = spec.env.port;
     process.env.HTTP_INTERNAL_PORT = spec.env.port;
     process.env.CONTAINER_PORT = spec.env.port; // container port === external
@@ -66,7 +70,7 @@ if (typeof spec.env.ipAddress === 'string') {
         ':' + spec.env.port;
     process.env.IOT_DEVICE_MANAGER_APP_URL = 'http://root-gadget.' + appSuffix +
         ':' + spec.env.port;
-    console.log(' **** USE URL http://root-launcher.'  + appSuffix +
+    console.log(' **** USE URL http://root-launcher.' + appSuffix +
                 ':' + spec.env.port);
 }
 
@@ -74,7 +78,7 @@ if (typeof spec.env.ipAddress === 'string') {
 console.log(spec.env);
 
 if (spec.env.debugApplication) {
-    process.env.NODE_DEBUG_OPTIONS="--inspect=0.0.0.0:9229";
+    process.env.NODE_DEBUG_OPTIONS='--inspect=0.0.0.0:9229';
 }
 
 if (spec.env.appLocalName && (spec.env.appImage)) {
@@ -84,9 +88,9 @@ if (spec.env.appLocalName && (spec.env.appImage)) {
         } else {
             console.log('Starting DC in a box...');
             process.on('SIGINT', function() {
-                console.log("Caught interrupt signal");
+                console.log('Caught interrupt signal');
                 top.__ca_graceful_shutdown__(null, function(err) {
-                    console.log('shutdown:' + (err ?  err : 'OK'));
+                    console.log('shutdown:' + (err ? err : 'OK'));
                 });
             });
         }

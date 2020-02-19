@@ -1,0 +1,4 @@
+test/**/*.js
+public/**/*.js
+docs
+typescript
