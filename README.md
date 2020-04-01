@@ -1,10 +1,10 @@
-# CAF (Cloud Assistant Framework)
+# Caf.js
 
-Co-design permanent, active, stateful, reliable cloud proxies with your web app and IoT devices.
+Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.
 
 See http://www.cafjs.com
 
-## CAF Command Line Tools
+## Command Line Tools
 
 To setup see {@link external:caf} (https://cafjs.github.io/api/caf/index.html).
 
