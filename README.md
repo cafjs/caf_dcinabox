@@ -63,6 +63,8 @@ Creates an application skeleton using the following `target` of increasing app c
 
 * `iot`: Add support for an iot device, e.g., a Rasperry Pi, to `web`.
 
+* `iotbrowser`: Add support for an iot device emulated in the browser, to `iot`.
+
 * `vr`: Add a virtual reality interface to `iot` using Aframe.
 
 Note that `target` defaults to `web`.
@@ -75,7 +77,7 @@ The argument `<appName>` is the name of your new application.
 
 `<appDir>` is the directory where the app will be written (defaults to `$PWD`).
 
-`<appConfig>` is a file with extra properties to instantiate the app template. It defaults to `generate.json` in the `caf_dcinabox/bin` directory. It leverages the CAF.js standard preprocessing of json component descriptions, so that it can default to system environment properties.
+`<appConfig>` is a file with extra properties to instantiate the app template. It defaults to `generate.json` in the `caf_dcinabox/bin` directory. It leverages the `Caf.js` standard preprocessing of json component descriptions, so that it can default to system environment properties.
 
 #### `cafjs reset`
 
@@ -132,7 +134,7 @@ Prints a help summary, or details of any of the above commands.
 
 #### Let's start in *quick prototyping mode*
 
-First, we build and run an IoT CAF application:
+First, we build and run an IoT `Caf.js` application:
 
     cd $HOME/caf/apps/caf_helloiot; cafjs build; cafjs run helloiot
 

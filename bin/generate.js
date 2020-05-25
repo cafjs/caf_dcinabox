@@ -17,7 +17,7 @@ const DEFAUL_SCRIPT = 'cpTemplate.sh';
 const usage = function() {
     console.log('Usage: generate.js --appName <string> --appDir <string> ' +
                 ' --appConfig <string> --target <string, e.g., ' +
-                'cloud|web|iot|vr> [--templateImage <string>]');
+                'cloud|web|iot|iotbrowser|vr> [--templateImage <string>]');
     process.exit(1);
 };
 

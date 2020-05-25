@@ -327,7 +327,8 @@ const that = {
                 that.__usage__('Usage: cafjs generate ' +
                                '[--templateImage <string>] appName [target] ' +
                                '[appDir] [appConfig] \n' +
-                               '  where target is, e.g., cloud|web|iot|vr' +
+                               ' where target is, e.g.,' +
+                               ' cloud|web|iot|iotbrowser|vr' +
                                ' and defaults to `web`');
                 return false;
             }
