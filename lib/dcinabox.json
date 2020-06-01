@@ -3,6 +3,7 @@
     "module" : "caf_core#caf_platform#platform_main",
     "description" : "Platform supervisor",
     "env" : {
+        "envProp" : "process.env.ENV_PROP||null",
         "appImage" : "process.env.APP_IMAGE||null",
         "appProtocol" : "process.env.APP_PROTOCOL||http",
         "appPublisher" :"process.env.APP_PUBLISHER||root",
@@ -277,6 +278,7 @@
                     "$._.env.appPublisher", "$._.env.appLocalName"
                 ],
                 "workingDir" : "$._.env.appWorkingDir",
+                "envProp" : "$._.env.envProp",
                 "props" : {
                     "APP_LOCAL_NAME" : "$._.env.appLocalName",
                     "TRUSTED_PUB_KEY_FILE" : "rsa_pub.pem.dummy",

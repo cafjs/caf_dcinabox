@@ -112,7 +112,8 @@ const that = {
                 return true;
             } else {
                 console.log('Invalid ' + x);
-                that.__usage__('Usage: cafjs run [--appImage <string>] ' +
+                that.__usage__('Usage: cafjs run [--envProp propkey=propval] ' +
+                               '[--appImage <string>] ' +
                                '[--ipAddress <string>] [--port <string>] ' +
                                '[--debugApplication <boolean>] ' +
                                'appLocalName [appWorkingDir] [host/app Vol]');
@@ -123,7 +124,7 @@ const that = {
         const argv = parseArgs(args, {
             string: [
                 'appImage', 'appLocalName', 'appWorkingDir',
-                'hostVolume', 'appVolume', 'ipAddress', 'port'
+                'hostVolume', 'appVolume', 'ipAddress', 'port', 'envProp'
             ],
             boolean: ['debugApplication'],
             unknown: usage

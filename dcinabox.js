@@ -6,7 +6,7 @@ const parseArgs = require('minimist');
 const XIP_SUFFIX = 'xip.io';
 
 const usage = function() {
-    console.log('Usage: dcinabox.js --appLocalName <string> ' +
+    console.log('Usage: dcinabox.js --envProp <string> --appLocalName <string> ' +
                 '--ipAddress <string> --port <string> --appImage ' +
                 '<string> [--appWorkingDir <string>] [--hostVolume <string>] ' +
                 '[--appVolume <string>] [--debugApplication <boolean>]');
@@ -15,7 +15,7 @@ const usage = function() {
 
 const argv = parseArgs(process.argv.slice(2), {
     string: ['appImage', 'appLocalName', 'appWorkingDir', 'ipAddress', 'port',
-             'hostVolume', 'appVolume'],
+             'hostVolume', 'appVolume', 'envProp'],
     boolean: ['debugApplication'],
     alias: {i: 'appImage', n: 'appLocalName', h: 'appWorkingDir',
             v: 'hostVolume', a: 'appVolume', d: 'debugApplication'},
@@ -30,7 +30,7 @@ const addOpt = function(x){
     }
 };
 
-
+addOpt('envProp');
 addOpt('appImage');
 addOpt('appLocalName');
 addOpt('appWorkingDir');
