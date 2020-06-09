@@ -79,6 +79,7 @@ console.log(spec.env);
 
 if (spec.env.debugApplication) {
     process.env.NODE_DEBUG_OPTIONS='--inspect=0.0.0.0:9229';
+    process.env.LOG_LEVEL='DEBUG';
 }
 
 if (spec.env.appLocalName && (spec.env.appImage)) {

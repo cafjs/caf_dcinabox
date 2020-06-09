@@ -42,8 +42,16 @@ const buildImage = function(src, image, cb) {
             } else {
                 const onFinished = function(err, output) {
                     if (err) {
-                        err.output = output;
-                        cb0(err);
+                        if (typeof err === 'object') {
+                            err.output = output;
+                            cb0(err);
+                        } else {
+                            const newErr = new Error('buildImage Error:' +
+                                                     err);
+                            newErr.output = output;
+                            newErr.original = err;
+                            cb0(newErr);
+                        }
                     } else {
                         //                    console.log(output);
                         cb0(null);

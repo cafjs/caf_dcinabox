@@ -29,6 +29,7 @@
         "debuggerPort" : "process.env.DEBUGGER_PORT||9229",
         "debugApplication" : "process.env.DEBUG_APPLICATION||false",
         "nodeDebugOptions" : "process.env.NODE_DEBUG_OPTIONS||",
+        "logLevel" : "process.env.LOG_LEVEL||WARN",
         "accountsURL" : "process.env.ACCOUNTS_URL||http://root-accounts.vcap.me:3000",
         "iotDeviceManagerAppURL":"process.env.IOT_DEVICE_MANAGER_APP_URL||http://root-gadget.vcap.me:3000",
         "appWorkingDir" : "process.env.APP_WORKING_DIR||/usr/src/app",
@@ -45,7 +46,7 @@
             "module": "caf_core#caf_components#plug_log",
             "description": "Logger service",
             "env" : {
-                "logLevel" : "DEBUG"
+                "logLevel" : "$._.env.logLevel"
             }
         },
         {
@@ -126,7 +127,8 @@
                     "APP_SUFFIX" :"$._.env.appSuffix",
                     "ACCOUNTS_URL" : "$._.env.accountsURL",
                     "PRE_REGISTER_APP_LOCAL_NAME" : "$._.env.appLocalName",
-                    "DEFAULT_UNITS" : "$._.env.defaultUnits"
+                    "DEFAULT_UNITS" : "$._.env.defaultUnits",
+                    "LOG_LEVEL" : "$._.env.logLevel"
                 }
             }
         },
@@ -164,7 +166,8 @@
                     "APP_PROTOCOL" : "$._.env.appProtocol",
                     "APP_PUBLISHER" : "$._.env.appPublisher",
                     "APP_PORT" :"$._.env.httpInternalPort",
-                    "APP_SUFFIX" :"$._.env.appSuffix"
+                    "APP_SUFFIX" :"$._.env.appSuffix",
+                    "LOG_LEVEL" : "$._.env.logLevel"
                 }
             }
         },
@@ -201,7 +204,8 @@
                     "APP_PUBLISHER" : "$._.env.appPublisher",
                     "APP_PORT" :"$._.env.httpInternalPort",
                     "APP_SUFFIX" :"$._.env.appSuffix",
-                    "ACCOUNTS_URL" : "$._.env.accountsURL"
+                    "ACCOUNTS_URL" : "$._.env.accountsURL",
+                    "LOG_LEVEL" : "$._.env.logLevel"
                 }
             }
         },
@@ -238,7 +242,8 @@
                     "APP_PUBLISHER" : "$._.env.appPublisher",
                     "APP_PORT" :"$._.env.httpInternalPort",
                     "APP_SUFFIX" :"$._.env.appSuffix",
-                    "ACCOUNTS_URL" : "$._.env.accountsURL"
+                    "ACCOUNTS_URL" : "$._.env.accountsURL",
+                    "LOG_LEVEL" : "$._.env.logLevel"
                 }
             }
         },
@@ -294,7 +299,8 @@
                     "ACCOUNTS_URL" : "$._.env.accountsURL",
                     "IOT_DEVICE_MANAGER_APP_URL" : "$._.env.iotDeviceManagerAppURL",
                     "DEBUGGER" : "$._.env.debugApplication",
-                    "NODE_OPTIONS" : "$._.env.nodeDebugOptions"
+                    "NODE_OPTIONS" : "$._.env.nodeDebugOptions",
+                    "LOG_LEVEL" : "$._.env.logLevel"
                 }
             }
         },
@@ -330,7 +336,8 @@
                     "APP_PUBLISHER" : "$._.env.appPublisher",
                     "APP_PORT" :"$._.env.httpInternalPort",
                     "APP_SUFFIX" :"$._.env.appSuffix",
-                    "LOCALHOST_PORT" : "$._.env.containerPort"
+                    "LOCALHOST_PORT" : "$._.env.containerPort",
+                    "LOG_LEVEL" : "$._.env.logLevel"
                 }
             }
         }
