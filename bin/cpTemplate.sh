@@ -14,4 +14,4 @@ echo $TEMPLATE_DIR
 
 mkdir -p ${OUT_DIR}
 
-docker run -u $(id -u):$(id -g) -v ${OUT_DIR}:/out ${SRC_IMAGE} ${TEMPLATE_DIR} /out
+docker run --rm -u $(id -u):$(id -g) -v ${OUT_DIR}:/out ${SRC_IMAGE} ${TEMPLATE_DIR} /out
