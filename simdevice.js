@@ -79,6 +79,7 @@ if (spec.env.debugApplication) {
     // TO DO: choose port # from command line for multi-device
     process.env.DEBUGGER_PORT='9230';
     process.env.NODE_DEBUG_OPTIONS='--inspect=0.0.0.0:9230';
+    process.env.LOG_LEVEL='DEBUG';
 }
 
 daemon.run([module], 'simDevice.json', spec, function(err, top) {
