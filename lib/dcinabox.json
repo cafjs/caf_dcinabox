@@ -157,6 +157,7 @@
                     "TRUSTED_PUB_KEY_FILE" : "rsa_pub.pem.dummy",
                     "PUBLIC_KEY_FILE" : "rsa_pub.pem.dummy",
                     "PRIVATE_KEY_FILE" : "rsa_priv.pem.dummy",
+                    "DISABLE_TEST_ACCOUNTS" : false,
                     "HOST": "root-accounts",
                     "PORT0": "$._.env.containerPort",
                     "REDIS_PAAS" : "ignore",
