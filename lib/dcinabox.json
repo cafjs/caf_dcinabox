@@ -29,6 +29,7 @@
         "debuggerPort" : "process.env.DEBUGGER_PORT||9229",
         "debugApplication" : "process.env.DEBUG_APPLICATION||false",
         "nodeDebugOptions" : "process.env.NODE_DEBUG_OPTIONS||",
+        "compressState" : "process.env.COMPRESS_STATE||true",
         "logLevel" : "process.env.LOG_LEVEL||WARN",
         "accountsURL" : "process.env.ACCOUNTS_URL||http://root-accounts.vcap.me:3000",
         "iotDeviceManagerAppURL":"process.env.IOT_DEVICE_MANAGER_APP_URL||http://root-gadget.vcap.me:3000",
@@ -301,6 +302,7 @@
                     "IOT_DEVICE_MANAGER_APP_URL" : "$._.env.iotDeviceManagerAppURL",
                     "DEBUGGER" : "$._.env.debugApplication",
                     "NODE_OPTIONS" : "$._.env.nodeDebugOptions",
+                    "COMPRESS_STATE" : "$._.env.compressState",
                     "LOG_LEVEL" : "$._.env.logLevel"
                 }
             }
