@@ -23,7 +23,7 @@ Starts a simulated cloud to run your app. Uses separate Docker containers for a 
 
 The application can also be directly accessed using the http HOST `localhost`, i.e.,`http://localhost:<externalPort>`. Some browser features are only enabled with https or http with `localhost`, i.e., will not work with `*.vcap.me`. A valid token in the URL is required.
 
-Two common usecases of `cafjs run`:
+Two common use cases of `cafjs run`:
 
 *  *Quick prototyping mode*: when creating a fresh container image is too expensive. Instead, build the app outside the container (`cafjs build`), and mount the host directory in a generic container image.
 *  *Validation mode*: create a container image with your app  (`cafjs mkImage`), and test locally before cloud deployment.
@@ -37,7 +37,7 @@ The `run_options` to `cafjs run` are:
 * `--appVolume <string>` The internal container directory where the `hostVolume` is mounted (*quick prototyping mode* only). Defaults to `$HOME`.
 * `--ipAddress <string>` The network interface for the service. Defaults to `localhost`.
 * `--port <number>` The port number for the service. Defaults to port 80.
-* `--debugApplication <boolean>` Start the node debugger listening on host port 9229 (app only).
+* `--debugApplication` (or just `-d`) Start the node debugger listening on host port 9229 (app only).
 
 For example, in *Quick prototyping mode*:
 
@@ -116,7 +116,7 @@ The `device_options` to `cafjs device` are:
 * `--appSuffix <string>`: the URL suffix for the Cloud services. It defaults to `vcap.me`. If set to a non-local suffix, the protocol switches to `https`, e.g., `https://root-accounts.cafjs.com`. This allows to simulate devices connected to a Cloud service.
 * `--ipAddress <string>` The network interface for the service. Defaults to `localhost`.
 * `--port <number>` The port number for the service. Defaults to port 80.
-
+* `--debugApplication` (or just `-d`) Start the node debugger listening on host port 9230 (app only).
 
 #### `cafjs mkIoTImage <appLocalName> [privileged:boolean]`
 
@@ -142,7 +142,7 @@ Login with user `foo`, password `pleasechange`, and URL `http://root-launcher.vc
 
 With the browser create a CA instance for application with owner`root`, local name `helloiot`, and CA name the device name, e.g., `device1`.
 
-Create a gadget  CA instance to manage the device `device1`. The application owner is `root`, local name `gadget`, and CA name `device1`. Configure in that app the target application as `root-helloiot` (don't click the privileged option). If `App Token Ready?` is `NO`, just go back to the `helloiot` app for `device1` to transparently register the token with the manager.
+Create a gadget  CA instance to manage the device `device1`. The application owner is `root`, local name `gadget`, and CA name `device1`. Configure in that app the target application as `root-helloiot` (don't click the privileged option). If `Token` is `NO`, just go back to the `helloiot` app for `device1` to transparently register the token with the manager.
 
 And now we are ready to start the device:
 

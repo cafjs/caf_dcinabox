@@ -6,10 +6,12 @@ const parseArgs = require('minimist');
 const XIP_SUFFIX = 'xip.io';
 
 const usage = function() {
-    console.log('Usage: dcinabox.js --envProp <string> --appLocalName <string> ' +
-                '--ipAddress <string> --port <string> --appImage ' +
-                '<string> [--appWorkingDir <string>] [--hostVolume <string>] ' +
-                '[--appVolume <string>] [--debugApplication <boolean>]');
+    const msg =
+          'Usage: dcinabox.js --envProp <string> --appLocalName <string>' +
+          ' --ipAddress <string> --port <string> --appImage ' +
+          '<string> [--appWorkingDir <string>] [--hostVolume <string>] ' +
+          '[--appVolume <string>] [--debugApplication <boolean>]';
+    console.log(msg);
     process.exit(1);
 };
 

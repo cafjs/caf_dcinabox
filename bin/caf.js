@@ -127,6 +127,7 @@ const that = {
                 'hostVolume', 'appVolume', 'ipAddress', 'port', 'envProp'
             ],
             boolean: ['debugApplication'],
+            alias: {d: 'debugApplication'},
             unknown: usage
         });
         const isPrototypeMode = (argv.appImage === undefined);
@@ -171,6 +172,7 @@ const that = {
                 'appSuffix'
             ],
             boolean: ['debugApplication'],
+            alias: {d: 'debugApplication'},
             unknown: usage
         });
         const options = argv._ || [];
