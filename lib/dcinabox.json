@@ -8,6 +8,8 @@
         "appProtocol" : "process.env.APP_PROTOCOL||http",
         "appPublisher" :"process.env.APP_PUBLISHER||root",
         "appLocalName" : "process.env.APP_LOCAL_NAME||dcinabox",
+        "appCDN" : "process.env.APP_CDN||null",
+        "appSubdirCDN" : "process.env.APP_SUBDIR_CDN||null",
         "appSuffix" : "process.env.APP_SUFFIX||vcap.me",
         "httpInternalPort" : "process.env.HTTP_INTERNAL_PORT||3000",
         "httpExternalPort" : "process.env.HTTP_EXTERNAL_PORT||80",
@@ -126,6 +128,8 @@
                     "APP_PUBLISHER" : "$._.env.appPublisher",
                     "APP_PORT" :"$._.env.httpInternalPort",
                     "APP_SUFFIX" :"$._.env.appSuffix",
+                    "APP_CDN" : "$._.env.appCDN",
+                    "APP_SUBDIR_CDN" : "$._.env.appSubdirCDN",
                     "ACCOUNTS_URL" : "$._.env.accountsURL",
                     "PRE_REGISTER_APP_LOCAL_NAME" : "$._.env.appLocalName",
                     "DEFAULT_UNITS" : "$._.env.defaultUnits",
@@ -169,6 +173,8 @@
                     "APP_PUBLISHER" : "$._.env.appPublisher",
                     "APP_PORT" :"$._.env.httpInternalPort",
                     "APP_SUFFIX" :"$._.env.appSuffix",
+                    "APP_CDN" : "$._.env.appCDN",
+                    "APP_SUBDIR_CDN" : "$._.env.appSubdirCDN",
                     "LOG_LEVEL" : "$._.env.logLevel"
                 }
             }
@@ -206,6 +212,8 @@
                     "APP_PUBLISHER" : "$._.env.appPublisher",
                     "APP_PORT" :"$._.env.httpInternalPort",
                     "APP_SUFFIX" :"$._.env.appSuffix",
+                    "APP_CDN" : "$._.env.appCDN",
+                    "APP_SUBDIR_CDN" : "$._.env.appSubdirCDN",
                     "ACCOUNTS_URL" : "$._.env.accountsURL",
                     "LOG_LEVEL" : "$._.env.logLevel"
                 }
@@ -244,6 +252,8 @@
                     "APP_PUBLISHER" : "$._.env.appPublisher",
                     "APP_PORT" :"$._.env.httpInternalPort",
                     "APP_SUFFIX" :"$._.env.appSuffix",
+                    "APP_CDN" : "$._.env.appCDN",
+                    "APP_SUBDIR_CDN" : "$._.env.appSubdirCDN",
                     "ACCOUNTS_URL" : "$._.env.accountsURL",
                     "LOG_LEVEL" : "$._.env.logLevel"
                 }
@@ -298,6 +308,8 @@
                     "APP_PUBLISHER" : "$._.env.appPublisher",
                     "APP_PORT" :"$._.env.httpInternalPort",
                     "APP_SUFFIX" :"$._.env.appSuffix",
+                    "APP_CDN" : "$._.env.appCDN",
+                    "APP_SUBDIR_CDN" : "$._.env.appSubdirCDN",
                     "ACCOUNTS_URL" : "$._.env.accountsURL",
                     "IOT_DEVICE_MANAGER_APP_URL" : "$._.env.iotDeviceManagerAppURL",
                     "DEBUGGER" : "$._.env.debugApplication",
@@ -339,6 +351,8 @@
                     "APP_PUBLISHER" : "$._.env.appPublisher",
                     "APP_PORT" :"$._.env.httpInternalPort",
                     "APP_SUFFIX" :"$._.env.appSuffix",
+                    "APP_CDN" : "$._.env.appCDN",
+                    "APP_SUBDIR_CDN" : "$._.env.appSubdirCDN",
                     "LOCALHOST_PORT" : "$._.env.containerPort",
                     "LOG_LEVEL" : "$._.env.logLevel"
                 }
