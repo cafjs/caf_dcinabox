@@ -22,7 +22,7 @@ const argv = parseArgs(process.argv.slice(2), {
     string: ['deviceId', 'password', 'rootDir', 'appSuffix', 'ipAddress',
              'port'],
     boolean: ['debugApplication'],
-    alias: {d: 'deviceId', p: 'password', r: 'rootDir', a: 'appSuffix'},
+    alias: {d: 'debugApplication', p: 'password', r: 'rootDir', a: 'appSuffix'},
     unknown: usage
 });
 
@@ -81,6 +81,7 @@ if (spec.env.debugApplication) {
     process.env.NODE_DEBUG_OPTIONS='--inspect=0.0.0.0:9230';
     process.env.LOG_LEVEL='DEBUG';
 }
+
 
 daemon.run([module], 'simDevice.json', spec, function(err, top) {
     if (err) {
