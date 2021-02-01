@@ -15,7 +15,8 @@ const DEFAULT_JSON = 'generate.json';
 const DEFAUL_SCRIPT = 'cpTemplate.sh';
 
 const usage = function() {
-    console.log('Usage: generate.js --appName <string> --appDir <string> ' +
+    console.log('Usage: generate.js [--update] --appName <string> ' +
+                '--appDir <string> ' +
                 ' --appConfig <string> --target <string, e.g., ' +
                 'cloud|web|iot|iotbrowser|vr> [--templateImage <string>]');
     process.exit(1);
@@ -24,6 +25,7 @@ const usage = function() {
 
 const argv = parseArgs(process.argv.slice(2), {
     string: ['templateImage', 'appName', 'appDir', 'appConfig', 'target'],
+    boolean: ['update'],
     unknown: usage
 });
 
@@ -40,8 +42,9 @@ const props = loader.__ca_loadDescription__(argv.appConfig || DEFAULT_JSON,
 const target = argv.target || props.env.target;
 const cmdFull = path.resolve(__dirname, DEFAUL_SCRIPT);
 const templateImage = argv.templateImage || props.env.image;
+const update = argv.update ? 'true' : 'false';
 const buf = child_process.execFileSync(cmdFull, [
-    argv.appDir, templateImage, target
+    argv.appDir, templateImage, target, update
 ]);
 
 console.log(buf.toString());

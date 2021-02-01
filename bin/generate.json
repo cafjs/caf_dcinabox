@@ -4,6 +4,8 @@
     "env" : {
         "appName": "process.env.APP_NAME||template",
         "image" : "process.env.IMAGE||gcr.io/cafjs-k8/root-template",
-        "target" : "process.env.TARGET||default"
+        "target" : "process.env.TARGET||default",
+        "appCDN": "process.env.APP_CDN||",
+        "__CDN__": "process.env.__CDN__||{{__CDN__}}"
     }
 }

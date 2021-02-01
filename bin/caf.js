@@ -137,6 +137,10 @@ const that = {
         if (!argv.appLocalName) {
             usage('--appLocalName');
         }
+        if (!argv.appLocalName.match(/^[a-z0-9]*$/)) {
+            usage('--appLocalName: lower case ASCII letters and' +
+                  ' numbers only');
+        }
         var appWorkingDir = options.shift();
         appWorkingDir = appWorkingDir ||
             (isPrototypeMode ? process.env['PWD'] : undefined);
@@ -327,7 +331,7 @@ const that = {
                 return true;
             } else {
                 console.log('Invalid ' + x);
-                that.__usage__('Usage: cafjs generate ' +
+                that.__usage__('Usage: cafjs generate [--update] ' +
                                '[--templateImage <string>] appName [target] ' +
                                '[appDir] [appConfig] \n' +
                                ' where target is, e.g.,' +
@@ -339,6 +343,7 @@ const that = {
         const argv = parseArgs(args, {
             string: ['templateImage', 'appName', 'target', 'appDir',
                      'appConfig'],
+            boolean: ['update'],
             unknown: usage
         });
 
