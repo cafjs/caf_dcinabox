@@ -153,7 +153,6 @@ const that = {
         var appImage = process.env['APP_IMAGE'] ||
                 'gcr.io/cafjs-k8/root-generic';
         condInsert(argv, 'appImage', appImage);
-        console.log(JSON.stringify(argsToArray(argv)));
         that.__spawn__('../dcinabox.js', argsToArray(argv));
     },
 
