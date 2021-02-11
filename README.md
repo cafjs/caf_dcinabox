@@ -9,9 +9,9 @@ See http://www.cafjs.com
 To setup see {@link external:caf} (https://cafjs.github.io/api/caf/index.html).
 
 The wrapper tool `cafjs` has subcommands of the form:
-
+```
     cafjs <command> <commandOptions> arg1 arg2...
-
+```
 The `commandOptions` always start with `--`, and are passed unchanged to the underlying tools. They are mostly for power users.
 
 The other arguments, e.g., `arg1`, `arg2`, are ordered. Positional arguments can always be replaced with equivalent `commandOptions`. However, when the same option is specified with conflicting values, the result is undefined.
@@ -40,14 +40,14 @@ The `run_options` to `cafjs run` are:
 * `--debugApplication` (or just `-d`) Start the node debugger listening on host port 9229 (app only).
 
 For example, in *Quick prototyping mode*:
-
+```
     cd $HOME/caf/apps/caf_helloworld; cafjs build; cafjs run helloworld
-
+```
 and in *Validation mode*:
-
+```
     cafjs mkImage $HOME/caf/apps/caf_helloworld gcr.io/cafjs-k8/root-helloworld
     cafjs run --appImage gcr.io/cafjs-k8/root-helloworld helloworld
-
+```
 
 #### `cafjs build`
 
@@ -135,9 +135,9 @@ Prints a help summary, or details of any of the above commands.
 #### Let's start in *quick prototyping mode*
 
 First, we build and run an IoT `Caf.js` application:
-
+```
     cd $HOME/caf/apps/caf_helloiot; cafjs build; cafjs run helloiot
-
+```
 Login with user `foo`, password `pleasechange`, and URL `http://root-launcher.vcap.me`.
 
 With the browser create a CA instance for application with owner`root`, local name `helloiot`, and CA name the device name, e.g., `device1`.
@@ -145,47 +145,47 @@ With the browser create a CA instance for application with owner`root`, local na
 Create a gadget  CA instance to manage the device `device1`. The application owner is `root`, local name `gadget`, and CA name `device1`. Configure in that app the target application as `root-helloiot` (don't click the privileged option). If `Token` is `NO`, just go back to the `helloiot` app for `device1` to transparently register the token with the manager.
 
 And now we are ready to start the device:
-
+```
     cafjs device foo-device1
-
+```
 It builds the device image, and after about a minute, the main loop should be reporting information from the CA.
 
 In the browser, choosing the `helloiot` app again, we can configure a pin `11` as input, and a pin `12` as `Output`, and change the pin `12` value. The simulated device main loop should print the new values. We can also interact with the mocked gpio pins using files:
-
+```
     docker exec -ti root-helloiot-foo-device1 /bin/ash
     cat /tmp/gpio/out/gpio12
     echo 1 > /tmp/gpio/in/gpio11
-
+```
 and the browser should now show the new input for pin `11`.
 
 #### And now in *validation mode*
 
 Build the container image, and run the app and device:
-
+```
     cd $HOME/caf/apps/caf_helloiot
     cafjs mkImage . gcr.io/cafjs-k8/root-helloiot
     cafjs run --appImage gcr.io/cafjs-k8/root-helloiot helloiot
     cafjs device foo-device1
-
+```
 The setup is similar to the previous case. In fact, since the `Redis` container persists changes in a host volume, all your CAs should still be there.
 
 
 ### Local multi-host deployment
 
 Use an external network interface for the service. For example, if `192.168.1.15` is the address of `wlan0` in my laptop:
-
+```
     cafjs run --appImage gcr.io/cafjs-k8/root-helloiot --ipAddress 192.168.1.15 --port 8080 helloiot
-
+```
 and, in a different computer connected to the same wireless LAN, type
-
+```
     cafjs device --ipAddress 192.168.1.15 --port 8080 --password pleasechange foo-device1
-
+```
 to simulate a device that is connected to the service in my laptop using the wireless LAN.
 
 Note that the URL for the service is:
-
+```
     http://root-launcher.192.168.1.15.xip.io:8080
-
+```
 the trick is that `xip.io` provides a DNS wildcard domain that maps `whatever.192.168.1.15.xip.io` to my IP address `192.168.1.15`.
 
 Also, using that URL, we can connect real devices on the WLAN.
