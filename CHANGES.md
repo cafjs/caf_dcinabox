@@ -6,6 +6,7 @@ The  copyright of the original `CAF` project is assigned to `Hewlett-Packard Dev
 
 ## 0.4.3
 - Add CDN support
+- Install workspace dependencies with `cafjs install`
 
 ## 0.4.2
  - Add shortcut `-d` for debugger

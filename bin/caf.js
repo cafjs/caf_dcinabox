@@ -6,15 +6,17 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const rimraf = require('rimraf');
+const findWorkspaceRoot = require('find-yarn-workspace-root');
 const caf_core = require('caf_core');
 const caf_comp = caf_core.caf_components;
 
 const myUtils = caf_comp.myUtils;
 
-const HELP = 'Usage: cafjs run|build|reset|device|mkImage|mkIoTImage|mkStatic|\
-pack|generate|help \n\
+const HELP = 'Usage: cafjs run|install|build|reset|device|mkImage|mkIoTImage|\
+mkStatic|pack|generate|help \n\
 where: \n\
 *  run:  starts a simulated cloud that mounts an app local volume. \n\
+*  install: installs all the workspace packages. \n\
 *  build: builds an application using local dependencies. \n\
 *  reset: cleans up, brute force, all docker containers and networks. \n\
 *  device: simulates a device that access a CA. \n\
@@ -27,8 +29,8 @@ where: \n\
 ';
 
 const usage = function() {
-    console.log('Usage: cafjs run|build|reset|device|mkImage|mkIoTImage|\
-mkStatic|pack|generate|help <...args...>');
+    console.log('Usage: cafjs run|install|build|reset|device|mkImage|\
+mkIoTImage|mkStatic|pack|generate|help <...args...>');
     process.exit(1);
 };
 
@@ -53,12 +55,12 @@ const argsToArray = function(args) {
 };
 
 const that = {
-    __usage__: function(msg) {
+    __usage__(msg) {
         console.log(msg);
         process.exit(1);
     },
 
-    __spawn__: function(cmd, args, cb) {
+    __spawn__(cmd, args, cb) {
         const cmdFull = path.resolve(__dirname, cmd);
         console.log('spawn: ' + cmdFull + ' args:' + JSON.stringify(args));
         const sp = child_process.spawn(cmdFull, args);
@@ -77,14 +79,14 @@ const that = {
         that.__spawnedChild__ = sp;
     },
 
-    __exec__: function(cmd, args) {
+    __exec__(cmd, args) {
         const cmdFull = path.resolve(__dirname, cmd);
         console.log(cmdFull + ' args:' + JSON.stringify(args));
         const buf = child_process.execFileSync(cmdFull, args);
         console.log(buf.toString());
     },
 
-    __no_args__: function(cmd, args, msg, spawn) {
+    __no_args__(cmd, args, msg, spawn) {
         const usage = function() {
             that.__usage__(msg);
         };
@@ -98,15 +100,32 @@ const that = {
         }
     },
 
-    build: function(args) {
+    install(args) {
+        // try CWD first
+        let workspaceRoot = findWorkspaceRoot();
+        if (!workspaceRoot) {
+            // try relative to this file
+            console.log(
+                `WARNING: working dir not in workspace, using ${__dirname}\n`
+            );
+            workspaceRoot = findWorkspaceRoot(__dirname);
+        }
+        if (workspaceRoot) {
+            that.__spawn__('installApp.sh', [workspaceRoot]);
+        } else {
+            throw new Error('Cannot find workspace root');
+        }
+    },
+
+    build(args) {
         that.__no_args__('buildApp.sh', args, 'Usage: cafjs build', true);
     },
 
-    reset: function(args) {
+    reset(args) {
         that.__no_args__('reset.sh', args, 'Usage: cafjs reset');
     },
 
-    run: function(args) {
+    run(args) {
         const usage = function(x) {
             if (x.indexOf('--') !== 0) {
                 return true;
@@ -156,7 +175,7 @@ const that = {
         that.__spawn__('../dcinabox.js', argsToArray(argv));
     },
 
-    device: function(args) {
+    device(args) {
         const usage = function(x) {
             if (x.indexOf('--') !== 0) {
                 return true;
@@ -187,7 +206,7 @@ const that = {
         that.__spawn__('../simdevice.js', argsToArray(argv));
     },
 
-    mkImage: function(args) {
+    mkImage(args) {
         const usage = function(x) {
             if (x.indexOf('--') !== 0) {
                 return true;
@@ -246,7 +265,7 @@ const that = {
         }
     },
 
-    mkIoTImage: function(args) {
+    mkIoTImage(args) {
         const usage = function(x) {
             if (x.indexOf('--') !== 0) {
                 return true;
@@ -274,7 +293,7 @@ const that = {
         that.__spawn__('mkIoTContainer.js', argsToArray(argv));
     },
 
-    mkStatic: function(args) {
+    mkStatic(args) {
         const usage = function(x) {
             if (x.indexOf('--') !== 0) {
                 return true;
@@ -295,7 +314,7 @@ const that = {
         that.__spawn__('mkStatic.js', argsToArray(argv));
     },
 
-    pack: function(args) {
+    pack(args) {
         const usage = function(x) {
             if (x.indexOf('--') !== 0) {
                 return true;
@@ -324,7 +343,7 @@ const that = {
         that.__spawn__('mkPack.js', argsToArray(argv));
     },
 
-    generate: function(args) {
+    generate(args) {
         const usage = function(x) {
             if (x.indexOf('--') !== 0) {
                 return true;
@@ -367,7 +386,7 @@ const that = {
         that.__spawn__('generate.js', argsToArray(argv));
     },
 
-    help: function(args) {
+    help(args) {
         const argv = parseArgs(args||[]);
         const options = argv._ || [];
         if (options.length > 0) {
