@@ -46,7 +46,9 @@ const id = myUtils.uniqueId().replace(/[/]/g, '1');
 const TMP_DIR = path.join(os.tmpdir(), id);
 
 const EXCLUDE_DIRS = ['node_modules', 'docs', 'test', 'examples', '.git',
-                      'apps', 'app', 'typescript'];
+                      'apps', 'app', 'typescript', 'tools',
+                      'public/js/build.js', 'public/js/build.min.js',
+                      'public/*/js/build.js', 'public/*/js/build.min.js'];
 
 /*
  *  Priority order:
