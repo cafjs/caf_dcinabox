@@ -4,4 +4,7 @@
 #npm link `${DIR}/findDevDepsCAF.js`
 #npm install
 #yarn install --ignore-optional
+
+[ ! -d "node_modules" ] && echo "Error: Call 'cafjs install' first" && exit 1
+
 yarn run build
