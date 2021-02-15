@@ -10,7 +10,7 @@
         "appLocalName" : "process.env.APP_LOCAL_NAME||gadget",
         "appSuffix" : "process.env.APP_SUFFIX||vcap.me",
         "appDevices" : "process.env.APP_DEVICES||[]",
-        "password" : "process.env.PASSWORD||pleasechange",
+        "password" : "process.env.PASSWORD||bar",
         "configVolume" : "process.env.CONFIG_VOLUME||/tmp/config",
         "synchronousInit" : "process.env.SYNCHRONOUS_INIT||true",
         "maxRetries" : "process.env.MAX_RETRIES||10",

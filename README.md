@@ -110,7 +110,7 @@ The manager container transparently builds the app image when missing, or it has
 
 The `device_options` to `cafjs device` are:
 
-* `--deviceId <string>`: a name for this device of the form `<owner>-<caLocalName>`, for example, `foo-device1`. The user `foo` is always present with password `pleasechange`.
+* `--deviceId <string>`: a name for this device of the form `<owner>-<caLocalName>`, for example, `foo-device1`. The user `foo` is always present with password `bar`.
 * `--password <string>`: a password to obtain authentication tokens. This argument is optional because the default password is valid for user `foo`.
 * `--rootDir <string>`: the host configuration root directory. It defaults to `/tmp`. To support multiple devices, `cafjs` creates subdirectories with the device name, e.g., `/tmp/foo-device1/config`.
 * `--appSuffix <string>`: the URL suffix for the Cloud services. It defaults to `vcap.me`. If set to a non-local suffix, the protocol switches to `https`, e.g., `https://root-accounts.cafjs.com`. This allows to simulate devices connected to a Cloud service.
@@ -138,7 +138,7 @@ First, we build and run an IoT `Caf.js` application:
 ```
     cd $HOME/caf/apps/caf_helloiot; cafjs build; cafjs run helloiot
 ```
-Login with user `foo`, password `pleasechange`, and URL `http://root-launcher.vcap.me`.
+Login with user `foo`, password `bar`, and URL `http://root-launcher.vcap.me`.
 
 With the browser create a CA instance for application with owner`root`, local name `helloiot`, and CA name the device name, e.g., `device1`.
 
@@ -178,7 +178,7 @@ Use an external network interface for the service. For example, if `192.168.1.15
 ```
 and, in a different computer connected to the same wireless LAN, type
 ```
-    cafjs device --ipAddress 192.168.1.15 --port 8080 --password pleasechange foo-device1
+    cafjs device --ipAddress 192.168.1.15 --port 8080 --password bar foo-device1
 ```
 to simulate a device that is connected to the service in my laptop using the wireless LAN.
 

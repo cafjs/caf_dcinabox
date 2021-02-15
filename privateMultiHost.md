@@ -42,13 +42,13 @@ use the url in the browser (the host should be in the 192.168.X.X subnet)
 
 ## Connect a device running in a different host
 
-    cafjs device --ipAddress 192.168.1.15 --port 8080 --password pleasechange foo-device1
+    cafjs device --ipAddress 192.168.1.15 --port 8080 --password bar foo-device1
 
 and this is equivalent to:
 
 generates a token (or alternatively cut/paste from device manager web page)
 
-    docker run --rm -e ACCOUNTS_URL=http://root-accounts.192.168.1.15.xip.io:8080  -e MY_ID=foo-projector1 -e PASSWD=pleasechange -v /config-foo-projector1:/config gcr.io/cafjs-k8/root-rpitoken
+    docker run --rm -e ACCOUNTS_URL=http://root-accounts.192.168.1.15.xip.io:8080  -e MY_ID=foo-projector1 -e PASSWD=bar -v /config-foo-projector1:/config gcr.io/cafjs-k8/root-rpitoken
 
 and then starts a management daemon with that token:
 
