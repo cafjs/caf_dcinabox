@@ -85,6 +85,10 @@ Brute force clean up of both containers and networks.
 
 A reset for a running application is also triggered after two `Control-C` keystrokes. A single `Control-C` triggers a gentle, but slower, shutdown.
 
+#### `cafjs update`
+
+Pulls up-to-date versions of the core Docker images.
+
 #### `cafjs mkImage <src> <imageName>`
 
 Creates a Docker image with the app. The arguments are the app directory and the image name.

@@ -13,7 +13,7 @@ const caf_comp = caf_core.caf_components;
 const myUtils = caf_comp.myUtils;
 
 const HELP = 'Usage: cafjs run|install|build|reset|device|mkImage|mkIoTImage|\
-mkStatic|pack|generate|help \n\
+mkStatic|pack|generate|update|help \n\
 where: \n\
 *  run:  starts a simulated cloud that mounts an app local volume. \n\
 *  install: installs all the workspace packages. \n\
@@ -25,12 +25,13 @@ where: \n\
 *  mkStatic: creates a dependency file to load artifacts statically. \n\
 *  pack: packs an application embedded in yarn workspaces. \n\
 *  generate: creates an skeleton app using a template. \n\
+*  update: pulls the current core Docker images. \n\
 *  help [command]: prints this info or details of any of the above. \n\
 ';
 
 const usage = function() {
     console.log('Usage: cafjs run|install|build|reset|device|mkImage|\
-mkIoTImage|mkStatic|pack|generate|help <...args...>');
+mkIoTImage|mkStatic|pack|generate|update|help <...args...>');
     process.exit(1);
 };
 
@@ -123,6 +124,10 @@ const that = {
 
     reset(args) {
         that.__no_args__('reset.sh', args, 'Usage: cafjs reset');
+    },
+
+    update(args) {
+        that.__no_args__('updateImages.sh', args, 'Usage: cafjs update', true);
     },
 
     run(args) {
