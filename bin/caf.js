@@ -377,6 +377,10 @@ const that = {
             usage('--appName');
         }
 
+        if (!argv.appName.match(/^[a-z0-9]*$/)) {
+            usage('--appName: lower case ASCII letters and' +
+                  ' numbers only');
+        }
         const target = options.shift();
         target && condInsert(argv, 'target', target);
 
