@@ -140,56 +140,47 @@ Prints a help summary, or details of any of the above commands.
 
 First, we build and run an IoT `Caf.js` application:
 ```
-    cd $HOME/caf/apps/caf_helloiot; cafjs build; cafjs run helloiot
+    cd $HOME/caf/apps/caf_hellorpi; cafjs build; cafjs run hellorpi
 ```
-Login with user `foo`, password `bar`, and URL `http://root-launcher.vcap.me`.
+Login with a browser for user `foo`, password `bar`, and URL `http://root-launcher.vcap.me`.
 
-With the browser create a CA instance for application with owner`root`, local name `helloiot`, and CA name the device name, e.g., `device1`.
+Create a gadget CA instance to manage the device `device1` using the main menu. The application owner is `root`, local name `gadget`, and CA name `device1`. Choose the target application `root-hellorpi`.
 
-Create a gadget  CA instance to manage the device `device1`. The application owner is `root`, local name `gadget`, and CA name `device1`. Configure in that app the target application as `root-helloiot` (don't click the privileged option). If `Token` is `NO`, just go back to the `helloiot` app for `device1` to transparently register the token with the manager.
+Create another CA instance, but this time for the application: owner `root`, local name `hellorpi`, and CA name `device1`, i.e., the previous device name.
 
-And now we are ready to start the device:
+And now we are ready to start in debug mode the simulated device, i.e., with `-d`, so that we can see pin changes in the console:
 ```
-    cafjs device foo-device1
+    cafjs device -d foo-device1
 ```
-It builds the device image, and after about a minute, the main loop should be reporting information from the CA.
+This command first builds the device app image using the ARM emulator and, after a few minutes, the main loop should start reporting device status.
 
-In the browser, choosing the `helloiot` app again, we can configure a pin `11` as input, and a pin `12` as `Output`, and change the pin `12` value. The simulated device main loop should print the new values. We can also interact with the mocked gpio pins using files:
-```
-    docker exec -ti root-helloiot-foo-device1 /bin/ash
-    cat /tmp/gpio/out/gpio12
-    echo 1 > /tmp/gpio/in/gpio11
-```
-and the browser should now show the new input for pin `11`.
+In the browser, choose the `hellorpi` app and press the `Do it!` button. The output log should show the default pin turned on for about a second.
 
 #### And now in *validation mode*
 
-Build the container image, and run the app and device:
+Build the container image, and run the app with a simulated device:
 ```
-    cd $HOME/caf/apps/caf_helloiot
-    cafjs mkImage . gcr.io/cafjs-k8/root-helloiot
-    cafjs run --appImage gcr.io/cafjs-k8/root-helloiot helloiot
-    cafjs device foo-device1
+    cd $HOME/caf/apps/caf_hellorpi
+    cafjs mkImage . gcr.io/cafjs-k8/root-hellorpi
+    cafjs run --appImage gcr.io/cafjs-k8/root-hellorpi hellorpi
+    cafjs device -d foo-device1
 ```
-The setup is similar to the previous case. In fact, since the `Redis` container persists changes in a host volume, all your CAs should still be there.
-
 
 ### Local multi-host deployment
 
-Use an external network interface for the service. For example, if `192.168.1.15` is the address of `wlan0` in my laptop:
+Pick an external network interface for the service. For example, if `192.168.1.15` is the address of `wlan0` in my laptop:
 ```
-    cafjs run --appImage gcr.io/cafjs-k8/root-helloiot --ipAddress 192.168.1.15 --port 8080 helloiot
+    cafjs run --appImage gcr.io/cafjs-k8/root-hellorpi --ipAddress 192.168.1.15 --port 8080 hellorpi
 ```
-and, in a different computer connected to the same wireless LAN, type
+and to connect a simulated device running in a different host:
 ```
     cafjs device --ipAddress 192.168.1.15 --port 8080 --password bar foo-device1
 ```
-to simulate a device that is connected to the service in my laptop using the wireless LAN.
 
-Note that the URL for the service is:
+Note that the URL for the service changes to
 ```
     http://root-launcher.192.168.1.15.xip.io:8080
 ```
-the trick is that `xip.io` provides a DNS wildcard domain that maps `whatever.192.168.1.15.xip.io` to my IP address `192.168.1.15`.
+where `xip.io` provides a DNS wildcard domain that maps `whatever.192.168.1.15.xip.io` to my IP address `192.168.1.15`.
 
-Also, using that URL, we can connect real devices on the WLAN.
+Multi-host deployments can also connect real devices by using the previous URL. Some devices are hard to mock...
