@@ -19,14 +19,12 @@ The other arguments, e.g., `arg1`, `arg2`, are ordered. Positional arguments can
 
 #### `cafjs run  <run_options> <appLocalName> [appWorkingDir] [host/app Vol]`
 
-Starts a simulated cloud to run your app. Uses separate Docker containers for a HAProxy-based http router, a Redis backend, and supporting apps for authentication, managing CAs, or registering devices.
-
-The application can also be directly accessed using the http HOST `localhost`, i.e.,`http://localhost:<externalPort>`. Some browser features are only enabled with https or http with `localhost`, i.e., will not work with `*.vcap.me`. A valid token in the URL is required.
+Starts a simulated Cloud to run your app. Uses separate Docker containers for a HAProxy-based http router, a Redis backend, and supporting services for authentication, managing CAs, or registering devices.
 
 Two common use cases of `cafjs run`:
 
-*  *Quick prototyping mode*: when creating a fresh container image is too expensive. Instead, build the app outside the container (`cafjs build`), and mount the host directory in a generic container image.
-*  *Validation mode*: create a container image with your app  (`cafjs mkImage`), and test locally before cloud deployment.
+*  *Quick prototyping mode*: when creating a fresh container image each time is too expensive. Instead, build the app outside the container (`cafjs build`), and `cafjs run` will mount the host directory in a generic container image to run it.
+*  *Validation mode*: create a container image with your app (`cafjs mkImage`), and test locally before deploying to the Cloud.
 
 The `run_options` to `cafjs run` are:
 
@@ -48,6 +46,8 @@ and in *Validation mode*:
     cafjs mkImage $HOME/caf/apps/caf_helloworld gcr.io/cafjs-k8/root-helloworld
     cafjs run --appImage gcr.io/cafjs-k8/root-helloworld helloworld
 ```
+
+Some browser features, such as the Web Bluetooth API, are only enabled with https or http with `localhost`, and will not work with a `.vcap.me` suffix. A solution in Chrome is to directly access the app with the URL `http://root-myappname.localhost:3003`. This URL should also include a valid token, e.g., obtained from the iframe app URL. A USB-connected Android phone can also access this protected APIs by enabling port forwarding in the Chrome debugger.
 
 #### `cafjs build`
 
@@ -95,36 +95,34 @@ Creates a Docker image with the app. The arguments are the app directory and the
 
 #### `cafjs device <device_options> <deviceId>`
 
-Simulates a device that access a CA. It uses `qemu-arm-static` to execute ARM instructions on your laptop or VM. This enables testing or building Docker images for the Raspberry Pi anywhere, even with modules using native extensions. No more cross-compilation nightmares!
+Simulates a device that access a CA. It uses `qemu-arm-static` to execute ARM instructions on your laptop or VM. This enables testing or building Docker images for the Raspberry Pi anywhere, even with modules using native extensions. No more cross-compilation mess!
 
 The (Linux) host should have `binfmt` enabled and properly configured. In Ubuntu just install the packages `qemu-user-static` and `binfmt-support`.
 
-The execution speed is not that bad, mostly because `qemu-arm-static` only emulates the application, and not the OS (i.e., the I/O). A core of my laptop is roughly the same as an RPi 2 core.
+The execution speed is not that bad, mostly because `qemu-arm-static` only emulates the application, and not the OS (i.e., the I/O). A CPU core of my laptop is roughly the same as an RPi 2 CPU core.
 
-Many applications in the RPi are not CPU intensive, and it is possible to pack about a hundred simulated devices in a large VM. This simplifies stress testing, CI, or debugging, in a Cloud-only environment.
+Many applications for the RPi are not CPU intensive, and it is possible to pack about a hundred simulated devices in a large VM. This simplifies stress testing in a Cloud-only environment.
 
-What about RPi I/O, like GPIO pins? For example, the `caf_rpi_gpio` package uses files and `inotify` to mock GPIO pins.
+What about RPi I/O, like GPIO pins? For example, the `caf_rpi_gpio` package uses local files and `inotify` to mock GPIO pins.
 
-Simulating a device needs two running containers:
+Simulating a device will create two containers:
 
-* A privileged, manager container that switches/updates apps, provides tokens for single sign-on, or builds images locally. Its CA is an instance of the `root-gadget` application. See package `extra/caf_gadget_daemon` for details.
-* An application container, which could be privileged or unprivileged depending on the application needs. We use different base container images for each case, and the manager container starts them with different security profiles.
-
-The manager container transparently builds the app image when missing, or it has changed. This typicaly takes about a minute.
+* A privileged container that manages apps, providing tokens for single sign-on, or building images locally. Its corresponding CA is an instance of the `root-gadget` application. See package `extra/caf_gadget_daemon` for details.
+* An application container to run your app.
 
 The `device_options` to `cafjs device` are:
 
 * `--deviceId <string>`: a name for this device of the form `<owner>-<caLocalName>`, for example, `foo-device1`. The user `foo` is always present with password `bar`.
 * `--password <string>`: a password to obtain authentication tokens. This argument is optional because the default password is valid for user `foo`.
-* `--rootDir <string>`: the host configuration root directory. It defaults to `/tmp`. To support multiple devices, `cafjs` creates subdirectories with the device name, e.g., `/tmp/foo-device1/config`.
-* `--appSuffix <string>`: the URL suffix for the Cloud services. It defaults to `vcap.me`. If set to a non-local suffix, the protocol switches to `https`, e.g., `https://root-accounts.cafjs.com`. This allows to simulate devices connected to a Cloud service.
+* `--rootDir <string>`: the configuration root directory. It defaults to `/tmp`. To support multiple devices, `cafjs` creates subdirectories with the device name, e.g., `/tmp/foo-device1/config`.
+* `--appSuffix <string>`: the URL suffix for the Cloud services. It defaults to `vcap.me`. If set to a non-local suffix, the protocol switches to `https`, e.g., `https://root-accounts.cafjs.com`. This allows the connection of a simulated device to a service deployed in the Cloud.
 * `--ipAddress <string>` The network interface for the service. Defaults to `localhost`.
 * `--port <number>` The port number for the service. Defaults to port 80.
 * `--debugApplication` (or just `-d`) Start the node debugger listening on host port 9230 (app only).
 
 #### `cafjs mkIoTImage <appLocalName> [privileged:boolean]`
 
-This command is not commonly used because `cafjs device` transparently creates device container images.
+This command is not commonly used because `cafjs device` creates device container images when needed.
 
 To execute this command we need the app running (see `cafjs run` above). `cafjs mkIoTImage` pretends to be a manager container, downloads a tar file with the app, and creates the device container image.
 
@@ -144,7 +142,7 @@ First, we build and run an IoT `Caf.js` application:
 ```
 Login with a browser for user `foo`, password `bar`, and URL `http://root-launcher.vcap.me`.
 
-Create a gadget CA instance to manage the device `device1` using the main menu. The application owner is `root`, local name `gadget`, and CA name `device1`. Choose the target application `root-hellorpi`.
+Create a gadget CA instance to manage the device `device1` using the main menu. The application publisher is `root`, application name `gadget`, and CA name `device1`. Choose the target application name `root-hellorpi` and press the `update` button. Ignore the `No token` warning, the token propagates with the next step.
 
 Create another CA instance, but this time for the application: owner `root`, local name `hellorpi`, and CA name `device1`, i.e., the previous device name.
 
@@ -174,7 +172,7 @@ Pick an external network interface for the service. For example, if `192.168.1.1
 ```
 and to connect a simulated device running in a different host:
 ```
-    cafjs device --ipAddress 192.168.1.15 --port 8080 --password bar foo-device1
+    cafjs device -d --ipAddress 192.168.1.15 --port 8080 --password bar foo-device1
 ```
 
 Note that the URL for the service changes to
@@ -183,4 +181,4 @@ Note that the URL for the service changes to
 ```
 where `xip.io` provides a DNS wildcard domain that maps `whatever.192.168.1.15.xip.io` to my IP address `192.168.1.15`.
 
-Multi-host deployments can also connect real devices by using the previous URL. Some devices are hard to mock...
+Multi-host deployments can also connect to real devices by using the previous URL. Some devices are hard to mock...
