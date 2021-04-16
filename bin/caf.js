@@ -387,6 +387,7 @@ const that = {
         let appDir = options.shift();
         appDir = appDir || process.env['PWD'];
         appDir = appDir === '.' ? process.env['PWD'] : appDir;
+        appDir = path.resolve(appDir);
         condInsert(argv, 'appDir', appDir);
 
         const appConfig = options.shift();
