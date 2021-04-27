@@ -3,12 +3,12 @@
 const daemon = require('./index.js');
 const parseArgs = require('minimist');
 
-const DEFAULT_DEVICE_ID='foo-device1';
-const DEFAULT_PASSWORD='bar';
-const DEFAULT_ROOT_DIR='/tmp';
-const DEFAULT_APP_SUFFIX='vcap.me';
+const DEFAULT_DEVICE_ID = 'foo-device1';
+const DEFAULT_PASSWORD = 'bar';
+const DEFAULT_ROOT_DIR = '/tmp';
+const DEFAULT_APP_SUFFIX = 'vcap.me';
 
-const XIP_SUFFIX='xip.io';
+const XIP_SUFFIX = process.env.XIP_SUFFIX || 'xip.io';
 
 const usage = function() {
     console.log('Usage: simdevice.js --deviceId <string, e.g., foo-device1> ' +

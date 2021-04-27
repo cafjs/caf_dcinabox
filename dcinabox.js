@@ -3,7 +3,7 @@
 const daemon = require('./index.js');
 const parseArgs = require('minimist');
 
-const XIP_SUFFIX = 'xip.io';
+const XIP_SUFFIX =  process.env.XIP_SUFFIX ||'xip.io';
 
 const usage = function() {
     const msg =
