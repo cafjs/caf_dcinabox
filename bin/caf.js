@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
-const NODE_VERSION = 16;
+const SUPPORTED_NODE = ['v12', 'v14', 'v16'];
+
 const child_process = require('child_process');
 const parseArgs = require('minimist');
 const path = require('path');
@@ -8,11 +9,11 @@ const fs = require('fs');
 const os = require('os');
 const rimraf = require('rimraf');
 const findWorkspaceRoot = require('find-yarn-workspace-root');
-if (parseInt(process.version.match(/^v(\d+)./)[1]) !== NODE_VERSION) {
-    console.log(`Error: node version ${NODE_VERSION}.X.X required,` +
-               ` current version is ${process.version}`);
-    process.exit(1);
-}
+
+const findGenericTag = () => {
+    const current = process.version.match(/^(v\d+)./)[1];
+    return SUPPORTED_NODE.includes(current) ? current : null;
+};
 
 const caf_core = require('caf_core');
 const caf_comp = caf_core.caf_components;
@@ -182,7 +183,17 @@ const that = {
         hostVolume && condInsert(argv, 'hostVolume', hostVolume);
         hostVolume && condInsert(argv, 'appVolume', hostVolume);
         var appImage = process.env['APP_IMAGE'] ||
-                'gcr.io/cafjs-k8/root-generic';
+            'gcr.io/cafjs-k8/root-generic';
+        if (appImage === 'gcr.io/cafjs-k8/root-generic') {
+            const tag = findGenericTag();
+            if (tag) {
+                appImage = `${appImage}:${tag}`;
+            } else {
+                console.log(`Error: node version ${process.version}` +
+                            ` not supported, use a recent LTS`);
+                process.exit(1);
+            }
+        }
         condInsert(argv, 'appImage', appImage);
         that.__spawn__('../dcinabox.js', argsToArray(argv));
     },
