@@ -235,12 +235,14 @@ const that = {
                 return true;
             } else {
                 console.log('Invalid ' + x);
-                that.__usage__('Usage: cafjs mkImage src imageName [iot]');
+                that.__usage__('Usage: cafjs [--gitpush] mkImage src ' +
+                               'imageName [iot]');
                 return false;
             }
         };
         const argv = parseArgs(args, {
             string: ['src', 'image'],
+            boolean: ['gitpush'],
             unknown: usage
         });
         const options = argv._ || [];
@@ -255,8 +257,20 @@ const that = {
             usage('--image');
         }
         const iot = (options.shift() === 'true');
-
-        if (fs.statSync(argv.src).isDirectory()) {
+        if (argv.gitpush) {
+            // Vanilla build with Dockerfile.gh
+            if (fs.statSync(argv.src).isDirectory()) {
+                that.__spawn__('mkGitPushImage.sh', [argv.src, argv.image],
+                               function(err) {
+                                   if (err) {
+                                       const e = myUtils.errToPrettyStr(err);
+                                       console.log(e);
+                                   }
+                               });
+            } else {
+                console.log('Error: Source is not a directory');
+            }
+        } else if (fs.statSync(argv.src).isDirectory()) {
             // pack first
             const id = myUtils.uniqueId().replace(/[/]/g, '1');
             const tmpTar = path.join(os.tmpdir(), 'app_' + id + '.tgz');

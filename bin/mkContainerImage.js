@@ -15,6 +15,7 @@ const usage = function() {
 
 const argv = parseArgs(process.argv.slice(2), {
     string: ['src', 'image'],
+    boolean: ['gitpush'], // ignored
     alias: {s: 'src', i: 'image'},
     unknown: usage
 });

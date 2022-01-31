@@ -89,9 +89,11 @@ A reset for a running application is also triggered after two `Control-C` keystr
 
 Pulls up-to-date versions of the core Docker images.
 
-#### `cafjs mkImage <src> <imageName>`
+#### `cafjs mkImage [--gitpush] <src> <imageName>`
 
 Creates a Docker image with the app. The arguments are the app directory and the image name.
+
+An optional argument `--gitpush` emulates the automated building of the image when we commit changes/tags to a properly configured github repository. This build uses a standard base image with the framework, and directly calls `docker build -f Dockerfile.gh`. See the file `Dockerfile.gh` in `caf_helloworld` for an example.
 
 #### `cafjs device <device_options> <deviceId>`
 
