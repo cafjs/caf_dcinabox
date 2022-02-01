@@ -235,7 +235,7 @@ const that = {
                 return true;
             } else {
                 console.log('Invalid ' + x);
-                that.__usage__('Usage: cafjs [--standalone] mkImage src ' +
+                that.__usage__('Usage: cafjs mkImage [--standalone] src ' +
                                'imageName [iot]');
                 return false;
             }
