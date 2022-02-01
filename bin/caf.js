@@ -235,14 +235,14 @@ const that = {
                 return true;
             } else {
                 console.log('Invalid ' + x);
-                that.__usage__('Usage: cafjs [--gitpush] mkImage src ' +
+                that.__usage__('Usage: cafjs [--standalone] mkImage src ' +
                                'imageName [iot]');
                 return false;
             }
         };
         const argv = parseArgs(args, {
             string: ['src', 'image'],
-            boolean: ['gitpush'],
+            boolean: ['standalone'],
             unknown: usage
         });
         const options = argv._ || [];
@@ -257,7 +257,7 @@ const that = {
             usage('--image');
         }
         const iot = (options.shift() === 'true');
-        if (argv.gitpush) {
+        if (argv.standalone) {
             // Vanilla build with Dockerfile.gh
             if (fs.statSync(argv.src).isDirectory()) {
                 that.__spawn__('mkGitPushImage.sh', [argv.src, argv.image],
