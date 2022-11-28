@@ -8,7 +8,7 @@
         "appProtocol" : "process.env.APP_PROTOCOL||http",
         "appPublisher" :"process.env.APP_PUBLISHER||root",
         "appLocalName" : "process.env.APP_LOCAL_NAME||gadget",
-        "appSuffix" : "process.env.APP_SUFFIX||vcap.me",
+        "appSuffix" : "process.env.APP_SUFFIX||localtest.me",
         "appDevices" : "process.env.APP_DEVICES||[]",
         "password" : "process.env.PASSWORD||bar",
         "configVolume" : "process.env.CONFIG_VOLUME||/tmp/config",
@@ -26,7 +26,7 @@
         "debuggerPort" : "process.env.DEBUGGER_PORT||9230",
         "nodeDebugOptions" : "process.env.NODE_DEBUG_OPTIONS||",
         "logLevel" : "process.env.LOG_LEVEL||WARN",
-        "accountsURL" : "process.env.ACCOUNTS_URL||http://root-accounts.vcap.me"
+        "accountsURL" : "process.env.ACCOUNTS_URL||http://root-accounts.localtest.me"
     },
     "components": [
         {

@@ -47,7 +47,7 @@ and in *Validation mode*:
     cafjs run --appImage gcr.io/cafjs-k8/root-helloworld helloworld
 ```
 
-Some browser features, such as the Web Bluetooth API, are only enabled with https or http with `localhost`, and will not work with a `.vcap.me` suffix. A solution in Chrome is to directly access the app with the URL `http://root-myappname.localhost:3003`. This URL should also include a valid token, e.g., obtained from the iframe app URL. A USB-connected Android phone can also access this protected APIs by enabling port forwarding in the Chrome debugger.
+Some browser features, such as the Web Bluetooth API, are only enabled with https or http with `localhost`, and will not work with a `.localtest.me` suffix. A solution in Chrome is to directly access the app with the URL `http://root-myappname.localhost:3003`. This URL should also include a valid token, e.g., obtained from the iframe app URL. A USB-connected Android phone can also access this protected APIs by enabling port forwarding in the Chrome debugger.
 
 #### `cafjs build`
 
@@ -117,7 +117,7 @@ The `device_options` to `cafjs device` are:
 * `--deviceId <string>`: a name for this device of the form `<owner>-<caLocalName>`, for example, `foo-device1`. The user `foo` is always present with password `bar`.
 * `--password <string>`: a password to obtain authentication tokens. This argument is optional because the default password is valid for user `foo`.
 * `--rootDir <string>`: the configuration root directory. It defaults to `/tmp`. To support multiple devices, `cafjs` creates subdirectories with the device name, e.g., `/tmp/foo-device1/config`.
-* `--appSuffix <string>`: the URL suffix for the Cloud services. It defaults to `vcap.me`. If set to a non-local suffix, the protocol switches to `https`, e.g., `https://root-accounts.cafjs.com`. This allows the connection of a simulated device to a service deployed in the Cloud.
+* `--appSuffix <string>`: the URL suffix for the Cloud services. It defaults to `localtest.me`. If set to a non-local suffix, the protocol switches to `https`, e.g., `https://root-accounts.cafjs.com`. This allows the connection of a simulated device to a service deployed in the Cloud.
 * `--ipAddress <string>` The network interface for the service. Defaults to `localhost`.
 * `--port <number>` The port number for the service. Defaults to port 80.
 * `--debugApplication` (or just `-d`) Start the node debugger listening on host port 9230 (app only).
@@ -142,7 +142,7 @@ First, we build and run an IoT `Caf.js` application:
 ```
     cd $HOME/caf/apps/caf_hellorpi; cafjs build; cafjs run hellorpi
 ```
-Login with a browser for user `foo`, password `bar`, and URL `http://root-launcher.vcap.me`.
+Login with a browser for user `foo`, password `bar`, and URL `http://root-launcher.localtest.me`.
 
 Create a gadget CA instance to manage the device `device1` using the main menu. The application publisher is `root`, application name `gadget`, and CA name `device1`. Choose the target application name `root-hellorpi` and press the `update` button. Ignore the `No token` warning, the token propagates with the next step.
 

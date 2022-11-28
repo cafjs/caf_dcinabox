@@ -64,7 +64,7 @@ if (typeof spec.env.ipAddress === 'string') {
                 spec.env.ipAddress + '.' + XIP_SUFFIX +
                 (spec.env.port ? ':' + spec.env.port : ''));
 } else if (spec.env.port) {
-    const appSuffix = process.env.APP_SUFFIX || 'vcap.me';
+    const appSuffix = process.env.APP_SUFFIX || 'localtest.me';
     process.env.HTTP_EXTERNAL_PORT = spec.env.port;
     process.env.HTTP_INTERNAL_PORT = spec.env.port;
     process.env.CONTAINER_PORT = spec.env.port; // container port === external

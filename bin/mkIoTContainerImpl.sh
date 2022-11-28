@@ -4,7 +4,7 @@ TMP_DIR=${TMP_DIR:-'/tmp/cafjs'}
 TMP_DIR=${TMP_DIR}-$1
 REGISTRY_LOCAL_PREFIX=${REGISTRY_LOCAL_PREFIX:-'localhost.localdomain:5000'}
 REGISTRY_USER=${REGISTRY_USER:-'root'}
-APP_SUFFIX=${APP_SUFFIX:-'vcap.me'}
+APP_SUFFIX=${APP_SUFFIX:-'localtest.me'}
 APP_PROTOCOL=${APP_PROTOCOL:-'http'}
 
 url=${APP_PROTOCOL}://${REGISTRY_USER}-$1.${APP_SUFFIX}/iot.tgz

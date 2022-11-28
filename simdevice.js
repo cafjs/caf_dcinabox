@@ -6,7 +6,7 @@ const parseArgs = require('minimist');
 const DEFAULT_DEVICE_ID = 'foo-device1';
 const DEFAULT_PASSWORD = 'bar';
 const DEFAULT_ROOT_DIR = '/tmp';
-const DEFAULT_APP_SUFFIX = 'vcap.me';
+const DEFAULT_APP_SUFFIX = 'localtest.me';
 
 const XIP_SUFFIX = process.env.XIP_SUFFIX || 'xip.io';
 
