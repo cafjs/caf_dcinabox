@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-const SUPPORTED_NODE = ['v12', 'v14', 'v16'];
+const SUPPORTED_NODE = ['v12', 'v14', 'v16', 'v18'];
 
 const child_process = require('child_process');
 const parseArgs = require('minimist');
